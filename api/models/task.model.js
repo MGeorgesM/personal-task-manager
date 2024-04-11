@@ -20,6 +20,7 @@ const taskSchema = new mongoose.Schema(
         column: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Column',
+            required: true,
         },
         owner: {
             type: mongoose.Schema.Types.ObjectId,

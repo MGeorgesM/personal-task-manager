@@ -51,4 +51,4 @@ const deleteColumn = async (req, res) => {
     }
 };
 
-
+module.exports = { createColumn, getColumns, updateColumn, deleteColumn };

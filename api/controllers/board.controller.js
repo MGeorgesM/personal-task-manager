@@ -41,7 +41,7 @@ const updateBoard = async (req, res) => {
             { title, description },
             { new: true }
         );
-
+        !board && res.status(404).json({ error: 'Board not found' });
         return res.status(200).json(board);
     } catch (error) {
         console.log(error);

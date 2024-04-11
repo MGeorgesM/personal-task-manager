@@ -31,6 +31,18 @@ const taskSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
+taskSchema.pre('remove', async function (next) {
+    try {
+        const Column = mongoose.model('Column');
+        const column = await Column.findById(this.column);
+        column.tasks = column.tasks.filter((task) => task._id.toString() !== this._id.toString());
+        await column.save();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+
 const Task = mongoose.model('Task', taskSchema);
 
 module.exports = { Task, taskSchema };

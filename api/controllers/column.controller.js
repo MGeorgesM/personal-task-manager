@@ -31,7 +31,7 @@ const updateColumn = async (req, res) => {
 
     try {
         const column = await Column.findByIdAndUpdate(id, { title }, { new: true });
-
+        !column && res.status(404).json({ error: 'Column not found' });
         return res.status(200).json(column);
     } catch (error) {
         console.log(error);

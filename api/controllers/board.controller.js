@@ -14,11 +14,11 @@ const createBoard = async (req, res) => {
 
 const getBoards = async (req, res) => {
     const userId = req.user._id;
-    const boardId = req.params.id;
+    const id = req.params.id;
 
     try {
-        if (boardId) {
-            const board = await Board.findOne({ _id: boardId, owner: userId });
+        if (id) {
+            const board = await Board.findOne({ _id: id, owner: userId });
             return res.status(200).json(board);
         } else {
             const boards = await Board.find({ owner: userId });
@@ -32,12 +32,12 @@ const getBoards = async (req, res) => {
 
 const updateBoard = async (req, res) => {
     const userId = req.user._id;
-    const boardId = req.params.id;
+    const id = req.params.id;
     const { title, description } = req.body;
 
     try {
         const board = await Board.findOneAndUpdate(
-            { _id: boardId, owner: userId },
+            { _id: id, owner: userId },
             { title, description },
             { new: true }
         );
@@ -51,10 +51,10 @@ const updateBoard = async (req, res) => {
 
 const deleteBoard = async (req, res) => {
     const userId = req.user._id;
-    const boardId = req.params.id;
+    const id = req.params.id;
 
     try {
-        const deletedBoard = await Board.findOneAndDelete({ _id: boardId, owner: userId });
+        const deletedBoard = await Board.findOneAndDelete({ _id: id, owner: userId });
         return res.status(200).json(deletedBoard);
     } catch (error) {
         console.log(error);

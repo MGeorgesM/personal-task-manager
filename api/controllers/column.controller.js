@@ -1,5 +1,4 @@
 const { Column } = require('../models/column.model');
-const { Task } = require('../models/task.model');
 
 const createColumn = async (req, res) => {
     const { title, boardId } = req.body;

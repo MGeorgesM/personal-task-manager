@@ -22,10 +22,16 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
     const columnId = req.params.columnId;
+    const userId = req.user._id;
 
     try {
-        const tasks = await Task.find({ column: columnId });
-        return res.status(200).json(tasks);
+        if (columnId) {
+            const tasks = await Task.find({ column: columnId });
+            return res.status(200).json(tasks);
+        } else {
+            const tasks = await Task.find({ owner: userId });
+            return res.status(200).json(tasks);
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while fetching tasks' });

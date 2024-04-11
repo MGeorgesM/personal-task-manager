@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema(
         fullName: {
             type: String,
             required: true,
-            select: false,
         },
         email: {
             type: String,
@@ -16,6 +15,13 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
+            select: false,
+        },
+
+        boards: {
+            type: [mongoose.Schema.Types.ObjectId],
+            ref: 'Board',
+            default: [],
         },
     },
     { timestamps: true }

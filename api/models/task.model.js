@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const boardSchema = new mongoose.Schema(
+const taskSchema = new mongoose.Schema(
     {
         title: {
             type: String,
@@ -8,12 +8,18 @@ const boardSchema = new mongoose.Schema(
         },
         description: {
             type: String,
-            required: true,
         },
-        columns: {
+        attachments: {
+            type: [String],
+            default: [],
+        },
+        tags: {
+            type: [String],
+            default: [],
+        },
+        column: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Column',
-            default: [],
         },
         owner: {
             type: mongoose.Schema.Types.ObjectId,
@@ -24,6 +30,6 @@ const boardSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const Board = mongoose.model('Board', boardSchema);
+const Task = mongoose.model('Task', taskSchema);
 
-module.exports = { Board, boardSchema };
+module.exports = { Task, taskSchema };

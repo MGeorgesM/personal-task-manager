@@ -5,17 +5,17 @@ const userSchema = new mongoose.Schema(
     {
         fullName: {
             type: String,
-            require: 'Full Name is required',
+            required: true,
             select: false,
         },
         email: {
             type: String,
-            require: 'Email is required',
+            required: true,
             unique: true,
         },
         password: {
             type: String,
-            require: 'Password is required',
+            required: true,
         },
     },
     { timestamps: true }

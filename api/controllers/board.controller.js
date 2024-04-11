@@ -61,3 +61,5 @@ const deleteBoard = async (req, res) => {
         return res.status(500).json({ error: 'Error while deleting board' });
     }
 };
+
+module.exports = { createBoard, getBoards, updateBoard, deleteBoard };

@@ -6,6 +6,12 @@ const columnSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        tasks: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Task',
+            },
+        ],
         owner: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Board',
@@ -13,6 +19,19 @@ const columnSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+columnSchema.pre('remove', async function (next) {
+    try {
+        const Board = mongoose.model('Board');
+        const board = await Board.findById(this.owner);
+        board.columns = board.columns.filter((column) => column._id.toString() !== this._id.toString());
+        await board.save();
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
 
 const Column = mongoose.model('Column', columnSchema);
 

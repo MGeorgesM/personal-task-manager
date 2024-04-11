@@ -24,7 +24,7 @@ const login = async (req, res) => {
         const user = await User.findOne({ email });
         !user && res.status(400).json('User not found');
 
-        const isPasswordMatch = user.comparePassword(plainTextPassword);
+        const isPasswordMatch = await user.comparePassword(plainTextPassword);
         !isPasswordMatch && res.status(400).json({ error: 'Invalid credentials' });
 
         const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);

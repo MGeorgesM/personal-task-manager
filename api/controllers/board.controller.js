@@ -1,14 +1,15 @@
 const { Board } = require('../models/board.model');
 
 const createBoard = async (req, res) => {
-    const { title, description, owner } = req.body;
+    const { title, description } = req.body;
+    const owner = req.user._id;
 
     try {
         const createdBoard = await Board.create({ title, description, owner });
         return res.status(201).json(createdBoard);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Error while creating board' });
+        return res.status(500).json({ error: 'Error while creating board' , error});
     }
 };
 

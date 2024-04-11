@@ -11,7 +11,7 @@ const boardSchema = new mongoose.Schema(
             required: true,
         },
         columns: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: [mongoose.Schema.Types.ObjectId],
             ref: 'Column',
             default: [],
         },

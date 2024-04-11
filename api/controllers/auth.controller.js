@@ -10,10 +10,12 @@ const register = async (req, res) => {
         existingUser && res.status(400).send({ error: 'User already exists' });
 
         const createdUser = await User.create({ fullName, email, password });
-        return res.status(201).json(createdUser);
+
+        const token = jwt.sign({ _id: createdUser._id }, process.env.SECRET_KEY);
+        return res.status(201).json(token);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({error: 'Error while registering'});
+        return res.status(500).json({ error: 'Error while registering', error });
     }
 };
 
@@ -25,13 +27,13 @@ const login = async (req, res) => {
         !user && res.status(400).json('User not found');
 
         const isPasswordMatch = await user.comparePassword(plainTextPassword);
-        !isPasswordMatch && res.status(400).json({ error: 'Invalid credentials' });
+        !isPasswordMatch && res.status(400).json({ error: 'Invalid email or password' });
 
         const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
-        return res.status(200).json({ token });
+        return res.status(200).json(token);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({error: 'Error while signing in'});
+        return res.status(500).json({ error: 'Error while signing in', error });
     }
 };
 

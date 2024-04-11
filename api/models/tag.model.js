@@ -9,6 +9,7 @@ const tagSchema = new mongoose.Schema({
     color: {
         type: String,
         required: true,
+        default: '#000000',
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

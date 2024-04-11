@@ -3,12 +3,18 @@ const { Column } = require('../models/column.model');
 const createColumn = async (req, res) => {
     const { title, boardId } = req.body;
 
+    const existingColumn = await Column.findOne({ title, owner: boardId });
+    
+    if (existingColumn) {
+        return res.status(400).json({ error: 'Column already exists' });
+    }
+
     try {
         const createdColumn = await Column.create({ title, owner: boardId });
         return res.status(201).json(createdColumn);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Error while creating column' });
+        return res.status(500).json({ error: 'Error while creating column', error });
     }
 };
 

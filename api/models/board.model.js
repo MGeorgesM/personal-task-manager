@@ -11,8 +11,13 @@ const boardSchema = new mongoose.Schema(
             required: true,
         },
         columns: {
-            type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Column' }],
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Column',
             default: [],
+        },
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
         },
     },
     { timestamps: true }

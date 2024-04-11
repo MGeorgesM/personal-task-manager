@@ -4,9 +4,9 @@ const router = express.Router();
 const authMiddleware = require('../middlewares/auth.middleware');
 const { createTag, getTags, updateTag, deleteTag } = require('../controllers/tags.controller');
 
-router.post('/tags', authMiddleware, createTag);
-router.get('/tags', authMiddleware, getTags);
-router.put('/tags/:id', authMiddleware, updateTag);
-router.delete('/tags/:id', authMiddleware, deleteTag);
+router.post('/', authMiddleware, createTag);
+router.get('/', authMiddleware, getTags);
+router.put('/:id', authMiddleware, updateTag);
+router.delete('/:id', authMiddleware, deleteTag);
 
 module.exports = router;

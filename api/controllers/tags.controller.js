@@ -1,11 +1,11 @@
-const { tags } = require('../models/tags.model');
+const { Tag } = require('../models/tag.model');
 
 const createTag = async (req, res) => {
     const { title, color } = req.body;
     const userId = req.user._id;
 
     try {
-        const createdTag = await tags.create({ title, color, owner: userId });
+        const createdTag = await Tag.create({ title, color, owner: userId });
         return res.status(201).json(createdTag);
     } catch (error) {
         console.log(error);
@@ -17,7 +17,7 @@ const getTags = async (req, res) => {
     const userId = req.user._id;
 
     try {
-        const tags = await tags.find({ owner: userId });
+        const tags = await Tag.find({ owner: userId });
         return res.status(200).json(tags);
     } catch (error) {
         console.log(error);
@@ -30,7 +30,7 @@ const updateTag = async (req, res) => {
     const { title, color } = req.body;
 
     try {
-        const tag = await tags.findByIdAndUpdate(id, { title, color }, { new: true });
+        const tag = await Tag.findByIdAndUpdate(id, { title, color }, { new: true });
         !tag && res.status(404).json({ error: 'Tag not found' });
         return res.status(200).json(tag);
     } catch (error) {
@@ -44,7 +44,7 @@ const deleteTag = async (req, res) => {
     const userId = req.user._id;
 
     try {
-        const deletedTag = await tags.findOneAndDelete({ _id: id, owner: userId });
+        const deletedTag = await Tag.findOneAndDelete({ _id: id, owner: userId });
         !deletedTag && res.status(404).json({ error: 'Tag not found' });
         return res.status(200).json(deletedTag);
     } catch (error) {

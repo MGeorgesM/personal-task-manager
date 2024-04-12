@@ -1,29 +1,29 @@
-const { Board } = require('../models/board.model');
+const { User } = require('../models/user.model');
 
 const createBoard = async (req, res) => {
     const { title, description } = req.body;
-    const owner = req.user._id;
-
+    const user = req.user;
     try {
-        const createdBoard = await Board.create({ title, description, owner });
-        return res.status(201).json(createdBoard);
+        user.boards.push({ title, description });
+        const updatedUser = await user.save();
+        return res.status(201).json(updatedUser);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Error while creating board' , error});
+        return res.status(500).json({ error: 'Error while creating board', error });
     }
 };
 
 const getBoards = async (req, res) => {
-    const userId = req.user._id;
     const id = req.params.id;
+    const user = req.user;
 
     try {
         if (id) {
-            const board = await Board.findOne({ _id: id, owner: userId });
+            const board = user.boards.find((board) => board._id.toString() === id);
+            !board && res.status(404).json({ error: 'Board not found' });
             return res.status(200).json(board);
         } else {
-            const boards = await Board.find({ owner: userId });
-            return res.status(200).json(boards);
+            return res.status(200).json(user.boards);
         }
     } catch (error) {
         console.log(error);
@@ -37,13 +37,25 @@ const updateBoard = async (req, res) => {
     const { title, description } = req.body;
 
     try {
-        const board = await Board.findOneAndUpdate(
-            { _id: id, owner: userId },
-            { title, description },
-            { new: true }
+        // const board = await Board.findOneAndUpdate(
+        //     { _id: id, owner: userId },
+        //     { title, description },
+        //     { new: true }
+        // );
+        // !board && res.status(404).json({ error: 'Board not found' });
+        // return res.status(200).json(board);
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            {
+                $set: {
+                    'boards.$[elem]': { title, description },
+                },
+            },
+            { new: true, arrayFilters: [{ 'elem._id': id }] }
         );
-        !board && res.status(404).json({ error: 'Board not found' });
-        return res.status(200).json(board);
+
+        return res.status(200).json(user);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while updating board' });
@@ -51,12 +63,19 @@ const updateBoard = async (req, res) => {
 };
 
 const deleteBoard = async (req, res) => {
-    const userId = req.user._id;
     const id = req.params.id;
+    const userId = req.user._id;
 
     try {
-        const deletedBoard = await Board.findOneAndDelete({ _id: id, owner: userId });
-        return res.status(200).json(deletedBoard);
+        const user = await User.findByIdAndUpdate(
+            userId,
+            {
+                $pull: {
+                    'boards.$._id': id,
+                },
+            },
+            { new: true }
+        );
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while deleting board' });

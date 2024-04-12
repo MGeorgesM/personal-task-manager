@@ -1,6 +1,55 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const taskSchema = new mongoose.Schema(
+    {
+        title: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+        },
+        attachments: {
+            type: [String],
+            default: [],
+        },
+        tags: {
+            type: [String],
+            default: [],
+        },
+    },
+);
+
+const columnSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    tasks: {
+        type: [taskSchema],
+        default: [],
+    },
+});
+
+const boardSchema = new mongoose.Schema(
+    {
+        title: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        columns: {
+            type: [columnSchema],
+            default: [],
+        },
+    },
+);
+
 const userSchema = new mongoose.Schema(
     {
         fullName: {
@@ -18,8 +67,7 @@ const userSchema = new mongoose.Schema(
         },
 
         boards: {
-            type: [mongoose.Schema.Types.ObjectId],
-            ref: 'Board',
+            type: [boardSchema],
             default: [],
         },
     },
@@ -33,8 +81,8 @@ userSchema.pre('save', async function (next) {
     return next();
 });
 
-userSchema.methods.comparePassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = function (password) {
+    return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model('User', userSchema);

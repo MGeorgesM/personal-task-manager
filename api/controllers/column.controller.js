@@ -1,20 +1,27 @@
-const { Column } = require('../models/column.model');
+const { User } = require('../models/user.model');
 
 const createColumn = async (req, res) => {
+    const userId = req.user._id;
     const { title, boardId } = req.body;
 
-    const existingColumn = await Column.findOne({ title, owner: boardId });
-    
-    if (existingColumn) {
-        return res.status(400).json({ error: 'Column already exists' });
-    }
-
     try {
-        const createdColumn = await Column.create({ title, owner: boardId });
-        return res.status(201).json(createdColumn);
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const board = user.boards.find((board) => board._id.toString() === boardId);
+        if (!board) return res.status(404).json({ error: 'Board not found' });
+
+        const existingColumn = board.columns.find((column) => column.title === title);
+        if (existingColumn) return res.status(400).json({ error: 'Column already exists' });
+
+        board.columns.push({ title });
+
+        await user.save();
+
+        return res.status(201).json(board.columns[board.columns.length - 1]);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ error: 'Error while creating column', error });
+        return res.status(500).json({ error: 'Error while creating column' });
     }
 };
 

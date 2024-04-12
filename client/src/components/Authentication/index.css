@@ -1,0 +1,88 @@
+.form-component {
+  height: calc(100vh - (48px * 2 + 43px));
+  width: 100%;
+  gap: 32px;
+}
+
+.container {
+  max-width: 30%;
+  min-height: 600px;
+  min-width: 400px;
+  padding: 24px;
+}
+
+.logo-form {
+  width: 100%;
+  height: auto;
+}
+
+.logo-form img {
+  height: 50px;
+  margin-top: 48px;
+  margin-bottom: 42px;
+  cursor: pointer;
+}
+
+.left-image img {
+  padding: 24px;
+  max-height: 552px;
+  object-fit: cover;
+
+}
+
+.validation-display {
+  height: auto;
+  color: #fa5252;
+}
+
+form {
+  width: 85%;
+}
+
+form>div {
+  width: 100%;
+}
+
+.input-container {
+  position: relative;
+}
+
+.field, .container button {
+  width: 90%;
+}
+
+.field input {
+  padding: 0 12px;
+  margin: 6px 0;
+  color: #6d6b6c;
+}
+
+.container button {
+  margin: 6px 0 48px 0;
+}
+
+.register-switch {
+  margin-top: 12px;
+  padding: 24px;
+  width: 100%;
+}
+
+.applinks {
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.apps {
+  gap: 8px;
+}
+
+.apps img {
+  max-width: 130px;
+  height: 40px;
+  ;
+  border-radius: 8px;
+}
+
+.register-link:hover {
+  cursor: pointer;
+}

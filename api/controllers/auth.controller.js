@@ -20,12 +20,15 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+
     const { email, password: plainTextPassword } = req.body;
+
+    if(!email || !plainTextPassword) return res.status(400).json({ error: 'Email and password are required' });
 
     try {
         const user = await User.findOne({ email });
         !user && res.status(400).json('User not found');
-
+        
         const isPasswordMatch = await user.comparePassword(plainTextPassword);
         !isPasswordMatch && res.status(400).json({ error: 'Invalid email or password' });
 

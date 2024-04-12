@@ -3,17 +3,16 @@ import React from 'react';
 import '../index.css';
 
 const SignInForm = ({ switchHandler, handleLogin, error, setFormData, formdata }) => {
-
-    const handleSubmit = (e) => {
-        handleLogin(formdata);
-        e.preventDefault();
-    };
-
     const handleChange = (e) => {
         setFormData({
             ...formdata,
             [e.target.name]: e.target.value,
         });
+    };
+
+    const handleSubmit = (e) => {
+        handleLogin(formdata);
+        e.preventDefault();
     };
 
     return (
@@ -39,11 +38,12 @@ const SignInForm = ({ switchHandler, handleLogin, error, setFormData, formdata }
                         required
                     />
                 </div>
-                {error && <div className="flex center validation-display size-m"><p>{error}</p></div>}
-                <button
-                    className="input-btn-lg primary-btn size-l box-shadow border-radius"
-                    type="submit"
-                >
+                {error && (
+                    <div className="flex center validation-display size-m">
+                        <p>{error}</p>
+                    </div>
+                )}
+                <button className="input-btn-lg primary-btn size-l box-shadow border-radius" type="submit">
                     Log in
                 </button>
             </form>

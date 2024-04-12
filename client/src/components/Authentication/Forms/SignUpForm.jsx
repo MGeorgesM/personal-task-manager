@@ -6,6 +6,7 @@ const SignupForm = ({ switchHandler, handleSignup, error, formData, setFormData 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(formData);
         handleSignup(formData);
     };
     return (
@@ -23,23 +24,11 @@ const SignupForm = ({ switchHandler, handleSignup, error, formData, setFormData 
                     />
                 </div>
                 <div className="field">
-
                     <input
                         className="input-btn-lg border-radius-s light-gray-bg border size-s"
                         type="text"
-                        name="name"
+                        name="fullName"
                         placeholder="Ful Name"
-                        required
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="field">
-
-                    <input
-                        className="input-btn-lg border-radius-s light-gray-bg border size-s"
-                        type="text"
-                        name="username"
-                        placeholder="Username"
                         required
                         onChange={handleChange}
                     />
@@ -63,12 +52,6 @@ const SignupForm = ({ switchHandler, handleSignup, error, formData, setFormData 
                     Sign Up
                 </button>
             </form>
-            {/* <p>
-                Have an Account?{' '}
-                <span className="login-link primary-text" onClick={() => switchHandler(true)}>
-                    Sign In
-                </span>
-            </p> */}
         </>
     );
 };

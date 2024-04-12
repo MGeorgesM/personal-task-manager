@@ -13,15 +13,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const applyUploadNone = (req, res, next) => {
-    if (req.method === 'POST' || req.method === 'PUT') {
-        upload.none()(req, res, next);
-    } else {
-        next();
-    }
-};
+// const applyUploadNone = (req, res, next) => {
+//     if (req.method === 'POST' || req.method === 'PUT') {
+//         upload.none()(req, res, next);
+//     } else {
+//         next();
+//     }
+// };
 
-app.use(applyUploadNone);
+// app.use(applyUploadNone);
 
 const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/user.routes');

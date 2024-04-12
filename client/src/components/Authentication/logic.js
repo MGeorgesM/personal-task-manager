@@ -7,8 +7,7 @@ export const useAuthenticationLogic = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
+        fullName: '',
         email: '',
         password: '',
     });
@@ -30,16 +29,12 @@ export const useAuthenticationLogic = () => {
     };
 
     const handleLogin = async (formData) => {
-        const data = new FormData();
-        data.append('email', formData.email);
-        data.append('password', formData.password);
-
         try {
-            const response = await sendRequest(requestMethods.POST, '/auth/login', data);
+            const response = await sendRequest(requestMethods.POST, '/auth/login', formData);
             if (response.status === 200) {
                 console.log(response.data)
                 localStorage.setItem('token', JSON.stringify(response.data));
-                // navigate('/');
+                navigate('/');
                 return;
             } else {
                 throw new Error();
@@ -54,15 +49,15 @@ export const useAuthenticationLogic = () => {
         try {
             const response = await sendRequest(requestMethods.POST, '/auth/register', formData);
             if (response.status === 201) {
-                localStorage.setItem('token', JSON.stringify(response.data.token));
-
-                // navigate('/');
+                localStorage.setItem('token', JSON.stringify(response.data));
+                navigate('/');
                 return;
             } else {
                 throw new Error();
             }
         } catch (error) {
-            setError(error.response.data.message);
+            setError(error.response.data.error);
+            console.log(error.response.data.error);
         }
     };
     return { isLogin, error, formData, setFormData, navigate, switchHandler, handleLogin, handleSignup };

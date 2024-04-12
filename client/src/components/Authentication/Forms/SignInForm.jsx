@@ -2,7 +2,8 @@ import React from 'react';
 
 import '../index.css';
 
-const SignInForm = ({ switchHandler, handleLogin, error, setFormData, formdata }) => {
+const SignInForm = ({ handleLogin, error, setFormData, formdata }) => {
+
     const handleChange = (e) => {
         setFormData({
             ...formdata,
@@ -47,12 +48,6 @@ const SignInForm = ({ switchHandler, handleLogin, error, setFormData, formdata }
                     Log in
                 </button>
             </form>
-            {/* <p>
-                Don't have an account'?{' '}
-                <span className="register-link primary-text" onClick={() => switchHandler(false)}>
-                    Register Now
-                </span>
-            </p> */}
         </>
     );
 };

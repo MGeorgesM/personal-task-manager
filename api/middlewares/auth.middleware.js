@@ -11,13 +11,13 @@ const authMiddleware = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.SECRET_KEY);
             !decoded && res.status(401).json({ error: 'Unauthorized. Invalid token.' });
 
-            const user = await User.findOne({ _id: decoded._id });
+            const user = await User.findById(decoded._id).select('-password');
             !user && res.status(404).json({ error: 'User not found. Please sign in.' });
 
             req.user = user;
             next();
         } else {
-             return res.status(401).json({ error: 'Unauthorized. Please sign in.' });
+            return res.status(401).json({ error: 'Unauthorized. Please sign in.' });
         }
     } catch (error) {
         console.log(error);

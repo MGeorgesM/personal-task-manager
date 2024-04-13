@@ -32,30 +32,19 @@ const getBoards = async (req, res) => {
 };
 
 const updateBoard = async (req, res) => {
-    const userId = req.user._id;
     const id = req.params.id;
+    const user = req.user;
     const { title, description } = req.body;
 
     try {
-        // const board = await Board.findOneAndUpdate(
-        //     { _id: id, owner: userId },
-        //     { title, description },
-        //     { new: true }
-        // );
-        // !board && res.status(404).json({ error: 'Board not found' });
-        // return res.status(200).json(board);
+        const boards = user.boards;
+        const boardIndex = boards.findIndex((board) => board._id.toString() === id);
+        if (boardIndex === -1) return res.status(404).json({ error: 'Board not found' });
 
-        const user = await User.findByIdAndUpdate(
-            userId,
-            {
-                $set: {
-                    'boards.$[elem]': { title, description },
-                },
-            },
-            { new: true, arrayFilters: [{ 'elem._id': id }] }
-        );
+        title && (boards[boardIndex].title = title);
+        description && (boards[boardIndex].description = description);
 
-        return res.status(200).json(user);
+        return res.status(200).json(boards);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while updating board' });
@@ -67,15 +56,13 @@ const deleteBoard = async (req, res) => {
     const userId = req.user._id;
 
     try {
-        const user = await User.findByIdAndUpdate(
-            userId,
-            {
-                $pull: {
-                    'boards.$._id': id,
-                },
-            },
-            { new: true }
-        );
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        user.boards = user.boards.filter((board) => board._id.toString() !== id);
+        await user.save();
+
+        return res.status(200).json(user);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while deleting board' });

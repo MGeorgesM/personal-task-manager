@@ -40,22 +40,28 @@ const getColumns = async (req, res) => {
 const updateColumn = async (req, res) => {
     const id = req.params.id;
     const userId = req.user._id;
-    const { title, boardId } = req.body;
+    const { title } = req.body;
+
+    if (!title) return res.status(200).json({ message: 'Nothing to update' });
 
     try {
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
-        const board = user.boards.find((board) => board._id.toString() === boardId);
-        if (!board) return res.status(404).json({ error: 'Board not found' });
+        let updatedColumn;
 
-        const column = board.columns.find((column) => column._id.toString() === id);
-        if (!column) return res.status(404).json({ error: 'Column not found' });
+        user.boards.forEach((board) => {
+            const column = board.columns.find((column) => column._id.toString() === id);
+            if (column) {
+                column.title = title;
+                updatedColumn = column;
+            }
+        });
 
-        column.title = title;
+        if (!updatedColumn) return res.status(404).json({ error: 'Column not found' });
+
         await user.save();
-
-        return res.status(200).json(column);
+        return res.status(200).json(updatedColumn);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ error: 'Error while updating column' });
@@ -68,10 +74,10 @@ const deleteColumn = async (req, res) => {
 
     try {
         const user = await User.findById(userId);
-        if(!user) return res.status(404).json({error: 'User not found'});
+        if (!user) return res.status(404).json({ error: 'User not found' });
 
         const board = user.boards.find((board) => board.columns.find((column) => column._id.toString() === id));
-        if(!board) return res.status(404).json({error: 'Board not found'});
+        if (!board) return res.status(404).json({ error: 'Board not found' });
 
         board.columns = board.columns.filter((column) => column._id.toString() !== id);
         await user.save();

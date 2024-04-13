@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setSelectedBoard } from '../../store/SelectedBoard';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+
 import './index.css';
 
 const Board = () => {
@@ -60,11 +63,24 @@ const Board = () => {
     };
 
     const ColumnCard = ({ column, onDragOver, onDrop }) => {
+        const handleEdit = () => {
+            console.log('Edit column:', column);
+        };
         const TaskCard = ({ task, onDragStart }) => {
+            const [isHovered, setIsHovered] = useState(false);
             return (
-                <div className="padding-m task-card" draggable="true" onDragStart={(e) => onDragStart(e)}>
+                <div
+                    className="padding-m task-card"
+                    draggable="true"
+                    onDragStart={(e) => onDragStart(e)}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
                     <p className="size-m boder">{task.title}</p>
                     <p className="size-m boder light-text">{task.description}</p>
+                    {isHovered && (
+                        <FontAwesomeIcon icon={faEdit} className="board-card-icon light-text" onClick={handleEdit} />
+                    )}
                 </div>
             );
         };
@@ -75,7 +91,13 @@ const Board = () => {
                 onDrop={(e) => onDrop(e, column._id)}
             >
                 <div className="column-header padding-m border-btm bold">
-                    <p className="size-l">{column.title}</p>
+                    <p
+                        className="size-l"
+                        // onMouseEnter={() => setIsHovered(true)}
+                        // onMouseLeave={() => setIsHovered(false)}
+                    >
+                        {column.title}
+                    </p>
                 </div>
                 {column.tasks.length > 0 &&
                     column.tasks.map((task) => (

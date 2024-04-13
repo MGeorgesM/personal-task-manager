@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     boards: [],
-    loading: false,
-    error: null,
 };
 
 const boardSlice = createSlice({

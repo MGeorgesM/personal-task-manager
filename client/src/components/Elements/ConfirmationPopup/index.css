@@ -1,0 +1,14 @@
+.popupmain-inner-s {
+    height: 128px;
+    width: 256px;
+    overflow: hidden;
+}
+
+.popup-header-s {
+    width: 100%;
+    padding: 8px;
+}
+
+.popup-btns {
+    gap:8px;
+}

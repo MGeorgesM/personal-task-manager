@@ -10,6 +10,7 @@ const boardsSlice = createSlice({
     reducers: {
         setBoards: (state, action) => {
             state.boards = action.payload;
+            console.log('setBoards:', state.boards)
         },
         addBoard: (state, action) => {
             state.boards.push(action.payload);
@@ -29,6 +30,6 @@ const boardsSlice = createSlice({
     },
 });
 
-export const { getBoards, addBoard, updateBoard, deleteBoard } = boardsSlice.actions;
+export const { setBoards, addBoard, updateBoard, deleteBoard } = boardsSlice.actions;
 export const boardsSliceName = boardsSlice.name;
 export default boardsSlice.reducer;

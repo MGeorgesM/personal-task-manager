@@ -14,7 +14,7 @@ const Authentication = () => {
             <div className="form-component flex center">
                 <div className="container flex center column">
                     <div className="logo-form flex column center box-shadow border border-radius-s">
-                        <img src="./images/assets/ig-text-logo.png" alt="logo" onClick={() => navigate('/')} />
+                        <img src="./assets/images/logo.png" alt="logo" onClick={() => navigate('/')} />
                         {isLogin ? (
                             <SignInForm
                                 switchHandler={switchHandler}

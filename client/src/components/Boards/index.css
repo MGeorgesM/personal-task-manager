@@ -1,0 +1,66 @@
+.boards-container {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.board-card {
+    height: 200px;
+    width: 200px;
+    margin: 12px;
+    position: relative;
+}
+
+.board-card:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+.board-card > p {
+    max-width: 90%;
+    text-align: center;
+}
+
+.board-card-icon {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    transform: translate(-50%, 50%);
+}
+
+
+.boards-header,
+.boards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+.boards-header>button {
+    padding: 4px 8px;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.popup-main {
+    padding: 32px;
+    gap: 16px;
+}
+
+.popup-main>textarea {
+    resize: none;
+    height: 64px;
+}
+
+.popup-btns {
+    gap: 8px;
+}
+
+.popup-btns>button {
+    padding: 8px 16px;
+}

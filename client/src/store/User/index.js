@@ -10,8 +10,11 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setCurrentUser: (state, action) => {
+            console.log('Current state:', state )
+            console.log('Action:', action)
             state.currentUser = action.payload;
             state.isLoggedIn = true;
+            console.log('New state:', state)
         },
         clearCurrentUser: (state) => {
             state.currentUser = null;

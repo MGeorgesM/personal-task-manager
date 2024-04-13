@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import { useDispatch } from 'react-redux';
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
+import { setCurrentUser } from '../../store/User';
 
 export const useAuthenticationLogic = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -12,6 +13,7 @@ export const useAuthenticationLogic = () => {
         password: '',
     });
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,10 +34,13 @@ export const useAuthenticationLogic = () => {
         try {
             const response = await sendRequest(requestMethods.POST, '/auth/login', formData);
             if (response.status === 200) {
-                console.log(response.data)
-                localStorage.setItem('token', JSON.stringify(response.data));
+
+                const action = setCurrentUser(response.data.user);
+                dispatch(action);
+
+                localStorage.setItem('token', JSON.stringify(response.data.token));
+
                 navigate('/');
-                return;
             } else {
                 throw new Error();
             }
@@ -49,9 +54,13 @@ export const useAuthenticationLogic = () => {
         try {
             const response = await sendRequest(requestMethods.POST, '/auth/register', formData);
             if (response.status === 201) {
-                localStorage.setItem('token', JSON.stringify(response.data));
+                
+                const action = setCurrentUser(response.data.user);
+                dispatch(action);
+                
+                localStorage.setItem('token', JSON.stringify(response.data.token));
+
                 navigate('/');
-                return;
             } else {
                 throw new Error();
             }

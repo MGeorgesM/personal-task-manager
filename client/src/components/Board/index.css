@@ -1,0 +1,34 @@
+.board-overview-container {
+    width: 100%;
+    height: 100vh;
+}
+
+.board-overview-main {
+    height: 100%;
+}
+
+.board-overview-header {
+    margin: 12px 0;
+}
+
+.board-overview-columns {
+    padding: 32px;
+    gap:12px;
+    justify-content: center;
+
+}
+
+.board-overview-column-card {
+    width: 200px;
+    height: fit-content;
+}
+
+.task-card {
+    border-bottom: 1px solid #dbdbdb;
+
+}
+
+.task-card:hover {
+    cursor: pointer;
+    color: #737373;
+}

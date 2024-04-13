@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     selectedBoard: null,
-    columns: [],
 };
 
 const selectedBoardSlice = createSlice({
@@ -15,50 +14,50 @@ const selectedBoardSlice = createSlice({
         },
 
         setColumns: (state, action) => {
-            state.columns = action.payload;
+            state.selectedBoard.columns = action.payload;
         },
 
         addColumn: (state, action) => {
-            state.columns.push(action.payload);
+            state.selectedBoard.columns.push(action.payload);
         },
 
         updateColumn: (state, action) => {
             const { _id, title } = action.payload;
-            const columnIndex = state.columns.findIndex((column) => column._id === _id);
+            const columnIndex = state.selectedBoard.columns.findIndex((column) => column._id === _id);
             if (columnIndex !== -1) {
-                state.columns[columnIndex].title = title || state.columns[columnIndex].title;
+                state.selectedBoard.columns[columnIndex].title = title || state.selectedBoard.columns[columnIndex].title;
             }
         },
         
         deleteColumn: (state, action) => {
             const columnId = action.payload;
-            state.columns = state.columns.filter((column) => column._id !== columnId);
+            state.selectedBoard.columns = state.selectedBoard.columns.filter((column) => column._id !== columnId);
         },
 
         addTask: (state, action) => {
             const { columnId, task } = action.payload;
-            const columnIndex = state.columns.findIndex((column) => column._id === columnId);
+            const columnIndex = state.selectedBoard.columns.findIndex((column) => column._id === columnId);
             if (columnIndex !== -1) {
-                state.columns[columnIndex].tasks.push(task);
+                state.selectedBoard.columns[columnIndex].tasks.push(task);
             }
         },
 
         updateTask: (state, action) => {
             const { columnId, task } = action.payload;
-            const columnIndex = state.columns.findIndex((column) => column._id === columnId);
+            const columnIndex = state.selectedBoard.columns.findIndex((column) => column._id === columnId);
             if (columnIndex !== -1) {
-                const taskIndex = state.columns[columnIndex].tasks.findIndex((t) => t._id === task._id);
+                const taskIndex = state.selectedBoard.columns[columnIndex].tasks.findIndex((t) => t._id === task._id);
                 if (taskIndex !== -1) {
-                    state.columns[columnIndex].tasks[taskIndex] = task;
+                    state.selectedBoard.columns[columnIndex].tasks[taskIndex] = task;
                 }
             }
         },
 
         deleteTask: (state, action) => {
             const { columnId, taskId } = action.payload;
-            const columnIndex = state.columns.findIndex((column) => column._id === columnId);
+            const columnIndex = state.selectedBoard.columns.findIndex((column) => column._id === columnId);
             if (columnIndex !== -1) {
-                state.columns[columnIndex].tasks = state.columns[columnIndex].tasks.filter((task) => task._id !== taskId);
+                state.selectedBoard.columns[columnIndex].tasks = state.selectedBoard.columns[columnIndex].tasks.filter((task) => task._id !== taskId);
             }
         },
     },

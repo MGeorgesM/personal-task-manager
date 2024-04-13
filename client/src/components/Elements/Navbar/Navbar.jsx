@@ -5,7 +5,7 @@ import './index.css';
 const Navbar = ({ bg = 'no-bg' }) => {
     const { token, signOut, navigate, userRoleId } = useNavBarLogic();
 
-    const navBg = 'black-bg-trsp';
+    const navBg = bg ;
 
     return (
         <div className={`navbar ${navBg}`}>

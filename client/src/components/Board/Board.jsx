@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
-import { setColumns, setSelectedBoard } from '../../store/SelectedBoard';
+import { setSelectedBoard } from '../../store/SelectedBoard';
 
 import './index.css';
 
 const Board = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
     const selectedBoard = useSelector((global) => global.selectedBoardSlice.selectedBoard);
-
-    const { id } = useParams();
+    const [draggedTask, setDraggedTask] = useState(null);
 
     useEffect(() => {
         const getBoardData = async () => {
@@ -20,29 +20,67 @@ const Board = () => {
                 if (response.status !== 200) throw new Error();
                 console.log(response.data);
                 dispatch(setSelectedBoard(response.data));
-                dispatch(setColumns(response.data.columns));
             } catch (error) {
                 console.log(error);
             }
         };
         getBoardData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    const ColumnCard = ({ column }) => {
-        const TaskCard = ({ task }) => {
+    const handleDragStart = (task) => {
+        setDraggedTask(task);
+    };
+
+    const handleDragOver = (columnId, e) => {
+        e.preventDefault();
+    };
+
+    const handleDrop = async (columnId, e) => {
+        e.preventDefault();
+        const updatedColumns = selectedBoard.columns.map((column) => {
+            if (column._id === columnId) {
+                return { ...column, tasks: [...column.tasks, draggedTask] };
+            } else if (column.tasks.find((task) => task._id === draggedTask._id)) {
+                return { ...column, tasks: column.tasks.filter((task) => task._id !== draggedTask._id) };
+            }
+            return column;
+        });
+
+        dispatch(setSelectedBoard({ ...selectedBoard, columns: updatedColumns }));
+
+        try {
+            const response = await sendRequest(requestMethods.PUT, `/tasks/${draggedTask._id}`, { columnId });
+            if (response.status === 200) {
+                setDraggedTask(null);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const ColumnCard = ({ column, onDragOver, onDrop }) => {
+        const TaskCard = ({ task, onDragStart }) => {
             return (
-                <div className="padding-m task-card">
+                <div className="padding-m task-card" draggable="true" onDragStart={(e) => onDragStart(e)}>
                     <p className="size-m boder">{task.title}</p>
                     <p className="size-m boder light-text">{task.description}</p>
                 </div>
             );
         };
         return (
-            <div className="board-overview-column-card light-gray-bg border border-radius-m box-shadow">
+            <div
+                className="board-overview-column-card light-gray-bg border border-radius-m box-shadow"
+                onDragOver={(e) => onDragOver(e)}
+                onDrop={(e) => onDrop(e, column._id)}
+            >
                 <div className="column-header padding-m border-btm bold">
                     <p className="size-l">{column.title}</p>
                 </div>
-                {column.tasks.length > 0 && column.tasks.map((task) => <TaskCard key={task._id} task={task} />)}
+                {column.tasks.length > 0 &&
+                    column.tasks.map((task) => (
+                        <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} />
+                    ))}
             </div>
         );
     };
@@ -57,7 +95,14 @@ const Board = () => {
                     </div>
                     <div className="board-overview-columns flex">
                         {selectedBoard.columns.length > 0 &&
-                            selectedBoard.columns.map((column) => <ColumnCard key={column._id} column={column} />)}
+                            selectedBoard.columns.map((column) => (
+                                <ColumnCard
+                                    key={column._id}
+                                    column={column}
+                                    onDragOver={(e) => handleDragOver(column._id, e)}
+                                    onDrop={(e) => handleDrop(column._id, e)}
+                                />
+                            ))}
                     </div>
                 </div>
             </div>

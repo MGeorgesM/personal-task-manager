@@ -10,7 +10,7 @@ const boardSlice = createSlice({
     name: 'boardSlice',
     initialState,
     reducers: {
-        getBoards: (state, action) => {
+        setBoards: (state, action) => {
             state.boards = action.payload;
         },
         addBoard: (state, action) => {
@@ -27,12 +27,6 @@ const boardSlice = createSlice({
         deleteBoard: (state, action) => {
             const boardId = action.payload;
             state.boards = state.boards.filter((board) => board._id !== boardId);
-        },
-        setLoading: (state, action) => {
-            state.loading = action.payload;
-        },
-        setError: (state, action) => {
-            state.error = action.payload;
         },
     },
 });

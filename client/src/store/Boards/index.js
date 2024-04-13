@@ -4,8 +4,8 @@ const initialState = {
     boards: [],
 };
 
-const boardSlice = createSlice({
-    name: 'boardSlice',
+const boardsSlice = createSlice({
+    name: 'boardsSlice',
     initialState,
     reducers: {
         setBoards: (state, action) => {
@@ -29,6 +29,6 @@ const boardSlice = createSlice({
     },
 });
 
-export const { getBoards, addBoard, updateBoard, deleteBoard, setLoading, setError } = boardSlice.actions;
-export const boardSliceName = boardSlice.name;
-export default boardSlice.reducer;
+export const { getBoards, addBoard, updateBoard, deleteBoard } = boardsSlice.actions;
+export const boardsSliceName = boardsSlice.name;
+export default boardsSlice.reducer;

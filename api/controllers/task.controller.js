@@ -4,6 +4,8 @@ const createTask = async (req, res) => {
     const { title, description, attachment, tags, columnId } = req.body;
     const userId = req.user._id;
 
+    if (!title || !columnId) return res.status(400).json({ error: 'Title and columnId are required' });
+
     try {
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
@@ -60,9 +62,9 @@ const updateTask = async (req, res) => {
             let currentColumn;
             let destinationColumn;
 
-            user.boards.forEach(board => {
-                board.columns.forEach(column => {
-                    if (column.tasks.find(task => task._id.toString() === id)) {
+            user.boards.forEach((board) => {
+                board.columns.forEach((column) => {
+                    if (column.tasks.find((task) => task._id.toString() === id)) {
                         currentColumn = column;
                     }
                     if (column._id.toString() === columnId) {
@@ -74,7 +76,7 @@ const updateTask = async (req, res) => {
             if (!currentColumn || !destinationColumn) return res.status(404).json({ error: 'Column not found' });
 
             if (currentColumn._id.toString() !== destinationColumn._id.toString()) {
-                const taskIndex = currentColumn.tasks.findIndex(task => task._id.toString() === id);
+                const taskIndex = currentColumn.tasks.findIndex((task) => task._id.toString() === id);
                 if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
 
                 [task] = currentColumn.tasks.splice(taskIndex, 1);
@@ -84,9 +86,9 @@ const updateTask = async (req, res) => {
         }
 
         if (!task) {
-            user.boards.forEach(board => {
-                board.columns.forEach(column => {
-                    const foundTask = column.tasks.find(task => task._id.toString() === id);
+            user.boards.forEach((board) => {
+                board.columns.forEach((column) => {
+                    const foundTask = column.tasks.find((task) => task._id.toString() === id);
                     if (foundTask) task = foundTask;
                 });
             });
@@ -98,7 +100,7 @@ const updateTask = async (req, res) => {
         description && (task.description = description);
         attachment && (task.attachment = attachment);
         tags && (task.tags = tags);
-    
+
         await user.save();
         return res.status(200).json(task);
     } catch (error) {
@@ -108,25 +110,28 @@ const updateTask = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
-    const { boardId, columnId, taskId } = req.params;
+    const id = req.params.id;
     const userId = req.user._id;
 
     try {
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ error: 'User not found' });
 
-        const board = user.boards.find(board => board._id.toString() === boardId);
-        if (!board) return res.status(404).json({ error: 'Board not found' });
+        let taskFound = false;
+        
+        user.boards.forEach((board) => {
+            board.columns.forEach((column) => {
+                const taskIndex = column.tasks.findIndex((task) => task._id.toString() === id);
+                if (taskIndex !== -1) {
+                    column.tasks.splice(taskIndex, 1);
+                    taskFound = true;
+                }
+            });
+        });
 
-        const column = board.columns.find(column => column._id.toString() === columnId);
-        if (!column) return res.status(404).json({ error: 'Column not found' });
+        if (!taskFound) return res.status(404).json({ error: 'Task not found' });
 
-        const taskIndex = column.tasks.findIndex(task => task._id.toString() === taskId);
-        if (taskIndex === -1) return res.status(404).json({ error: 'Task not found' });
-
-        column.tasks.splice(taskIndex, 1);
         await user.save();
-
         return res.status(200).json({ message: 'Task deleted successfully' });
     } catch (error) {
         console.log(error);

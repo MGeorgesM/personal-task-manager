@@ -14,6 +14,7 @@ const Boards = () => {
         title: '',
         description: '',
     });
+    
     const [isPopupOpen, setIsPopupOpen] = useState({
         type: '',
         entity: '',
@@ -40,7 +41,7 @@ const Boards = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleNewBoardInputChange = (e) => {
+    const handleInputChange = (e) => {
         setNewBoardData({ ...newBoardData, [e.target.name]: e.target.value });
     };
 
@@ -83,7 +84,7 @@ const Boards = () => {
             {isPopupOpen.isOpen === true && isPopupOpen.type === 'create' && (
                 <Popup
                     handleProceed={handleCreateBoard}
-                    handleInputChange={handleNewBoardInputChange}
+                    handleInputChange={handleInputChange}
                     handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                     isPopupOpen={isPopupOpen}
                     data={newBoardData}

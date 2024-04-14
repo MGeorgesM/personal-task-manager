@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setBoards } from '../../../store/Boards';
 
 import Popup from '../../Elements/Popup/Popup';

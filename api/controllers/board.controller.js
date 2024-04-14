@@ -15,7 +15,10 @@ const createBoard = async (req, res) => {
 
 const getBoards = async (req, res) => {
     const id = req.params.id;
-    const user = req.user;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
 
     try {
         if (id) {
@@ -43,6 +46,7 @@ const updateBoard = async (req, res) => {
 
         title && (boards[boardIndex].title = title);
         description && (boards[boardIndex].description = description);
+        await user.save();
 
         return res.status(200).json(boards);
     } catch (error) {

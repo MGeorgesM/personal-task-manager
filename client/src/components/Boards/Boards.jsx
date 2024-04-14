@@ -29,6 +29,7 @@ const Boards = () => {
             try {
                 const response = await sendRequest(requestMethods.GET, '/boards', null);
                 if (response.status !== 200) throw new Error();
+                console.log(response.data);
                 dispatch(setBoards(response.data));
             } catch (error) {
                 console.log(error);

@@ -1,0 +1,25 @@
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.popup-main {
+    padding: 32px;
+    gap: 16px;
+}
+
+.popup-main>textarea {
+    resize: none;
+    height: 64px;
+}
+
+.popup-btns {
+    gap: 8px;
+}
+
+.popup-btns>button {
+    padding: 8px 16px;
+}

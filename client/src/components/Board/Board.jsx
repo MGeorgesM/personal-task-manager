@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setSelectedBoard } from '../../store/SelectedBoard';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import ColumnCard from './ColumnCard/ColumnCard';
+import EditPopup from '../Elements/EditPopup/EditPopup';
 
 import './index.css';
 
@@ -15,6 +15,17 @@ const Board = () => {
     const dispatch = useDispatch();
     const selectedBoard = useSelector((global) => global.selectedBoardSlice.selectedBoard);
     const [draggedTask, setDraggedTask] = useState(null);
+
+    const [isPopupOpen, setIsPopupOpen] = useState({
+        type: '',
+        entity: '',
+        actionTitle: '',
+        isOpen: false,
+    });
+    const [boardData, setBoardData] = useState({
+        title: selectedBoard?.title || '',
+        description: selectedBoard?.description || '',
+    });
 
     useEffect(() => {
         const getBoardData = async () => {
@@ -62,72 +73,40 @@ const Board = () => {
         }
     };
 
-    const ColumnCard = ({ column, onDragOver, onDrop }) => {
-        const handleEdit = () => {
-            console.log('Edit column:', column);
-        };
-        const TaskCard = ({ task, onDragStart }) => {
-            const [isHovered, setIsHovered] = useState(false);
-            return (
-                <div
-                    className="padding-m task-card"
-                    draggable="true"
-                    onDragStart={(e) => onDragStart(e)}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <p className="size-m boder">{task.title}</p>
-                    <p className="size-m boder light-text">{task.description}</p>
-                    {isHovered && (
-                        <FontAwesomeIcon icon={faEdit} className="board-card-icon light-text" onClick={handleEdit} />
-                    )}
-                </div>
-            );
-        };
-        return (
-            <div
-                className="board-overview-column-card light-gray-bg border border-radius-m box-shadow"
-                onDragOver={(e) => onDragOver(e)}
-                onDrop={(e) => onDrop(e, column._id)}
-            >
-                <div className="column-header padding-m border-btm bold">
-                    <p
-                        className="size-l"
-                        // onMouseEnter={() => setIsHovered(true)}
-                        // onMouseLeave={() => setIsHovered(false)}
-                    >
-                        {column.title}
-                    </p>
-                </div>
-                {column.tasks.length > 0 &&
-                    column.tasks.map((task) => (
-                        <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} />
-                    ))}
-            </div>
-        );
+    const handleInputChange = (e) => {
+        setBoardData({ ...boardData, [e.target.name]: e.target.value });
     };
+
+    const handleCancel = (e) => {
+        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+    };
+
 
     if (selectedBoard)
         return (
-            <div className="board-overview-container">
-                <div className="board-overview-main">
-                    <div className="board-overview-header flex column center">
-                        <p className="size-xl bold">{selectedBoard.title}</p>
-                        <p className="size-m">{selectedBoard.description}</p>
-                    </div>
-                    <div className="board-overview-columns flex">
-                        {selectedBoard.columns.length > 0 &&
-                            selectedBoard.columns.map((column) => (
-                                <ColumnCard
-                                    key={column._id}
-                                    column={column}
-                                    onDragOver={(e) => handleDragOver(column._id, e)}
-                                    onDrop={(e) => handleDrop(column._id, e)}
-                                />
-                            ))}
+            <>
+                <div className="board-overview-container">
+                    <div className="board-overview-main">
+                        <div className="board-overview-header flex column center">
+                            <p className="size-xl bold">{selectedBoard.title}</p>
+                            <p className="size-m">{selectedBoard.description}</p>
+                        </div>
+                        <div className="board-overview-columns flex">
+                            {selectedBoard.columns.length > 0 &&
+                                selectedBoard.columns.map((column) => (
+                                    <ColumnCard
+                                        key={column._id}
+                                        column={column}
+                                        onDragOver={(e) => handleDragOver(column._id, e)}
+                                        onDrop={(e) => handleDrop(column._id, e)}
+                                        handleDragStart={handleDragStart}
+                                    />
+                                ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+                {isPopupOpen.isOpen === true && isPopupOpen.entity === 'board' && <EditPopup />}
+            </>
         );
 };
 

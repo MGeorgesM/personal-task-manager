@@ -13,7 +13,7 @@
 
 .board-overview-columns {
     padding: 32px;
-    gap:12px;
+    gap: 12px;
     justify-content: center;
 
 }
@@ -21,6 +21,10 @@
 .board-overview-column-card {
     width: 200px;
     height: fit-content;
+}
+
+.column-header {
+    position: relative;
 }
 
 .task-card {

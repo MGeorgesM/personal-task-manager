@@ -8,10 +8,21 @@ import { setBoards } from '../../store/Boards';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
+import EditPopup from '../Elements/EditPopup/EditPopup';
+
 import './index.css';
 
 const Boards = () => {
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isPopupOpen, setIsPopupOpen] = useState({
+        type: '',
+        entity: '',
+        actionTitle: '',
+        isOpen: false,
+    });
+    const [boardData, setBoardData] = useState({
+        title: '',
+        description: '',
+    });
     const boards = useSelector((global) => global.boardsSlice.boards);
     const dispatch = useDispatch();
 
@@ -30,91 +41,90 @@ const Boards = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const BoardCard = ({ board }) => {
-        const [isHoverd, setIsHoverd] = useState(false);
-        const navigate = useNavigate();
-
-        const handleBoardEdit = () => {
-            console.log('Edit board:', board);
-        };
-
-        return (
-            <div
-                className="board-card secondary-bg flex column center box-shadow border"
-                onMouseEnter={() => setIsHoverd(true)}
-                onMouseLeave={() => setIsHoverd(false)}
-                onClick = {() => navigate(`/board/${board._id}`)}
-            >
-                <p className="size-l bold">{board.title}</p>
-                <p className="size-m">{board.description}</p>
-                {isHoverd && (
-                    <FontAwesomeIcon icon={faEdit} className="board-card-icon light-text" onClick={handleBoardEdit} />
-                )}
-            </div>
-        );
+    const handleInputChange = (e) => {
+        setBoardData({ ...boardData, [e.target.name]: e.target.value });
     };
 
-    const AddBoardPopup = ({ actionTitle, entity, ...inputs }) => {
-        const [boardData, setBoardData] = useState({
-            title: '',
-            description: '',
-        });
+    const handleCancel = (e) => {
+        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+    };
 
-        const handleInputChange = (e) => {
-            setBoardData({ ...boardData, [e.target.name]: e.target.value });
-        };
+    const handleCreateBoard = async () => {
+        try {
+            const response = await sendRequest(requestMethods.POST, '/boards', boardData);
+            if (response.status !== 201) throw new Error();
+            dispatch(setBoards(response.data.boards));
+            setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-        const handleCreateBoard = async () => {
-            try {
-                const response = await sendRequest(requestMethods.POST, '/boards', boardData);
-                if (response.status !== 201) throw new Error();
-                dispatch(setBoards(response.data.boards));
-                setIsPopupOpen(false);
-            } catch (error) {
-                console.log(error);
-            }
-        };
+    const handleBoardEdit = async (id) => {
+        try {
+            const response = await sendRequest(requestMethods.PUT, `/boards/${id}`, boardData);
+            if (response.status !== 200) throw new Error();
+            dispatch(setBoards(response.data));
+            setIsPopupOpen({ ...isPopupOpen, isOpen: true });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-        const InputField = ({ inputTitle, entity }) => {
-            return (
-                <input
-                    className="input-btn-lg"
-                    type="text"
-                    placeholder={inputTitle}
-                    name={inputTitle}
-                    value={entity.title}
-                    onChange={handleInputChange}
-                />
-            );
-        };
+    const handleBoardDelete = async (id) => {
+        try {
+            const response = await sendRequest(requestMethods.DELETE, `/boards/${id}`, null);
+            if (response.status !== 200) throw new Error();
+            const remaingBoards = boards.filter((board) => board._id !== id);
+            dispatch(setBoards(remaingBoards));
+            setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const BoardCard = ({ board }) => {
+        const [isHovered, setIsHovered] = useState(false);
+        const navigate = useNavigate();
 
         return (
-            <div className="popup-container flex center black-bg-trsp">
-                <div className="popup-main white-bg flex column center box-shadow border border-radius">
-                    <div className="popup-header">
-                        <h2 className="size-l bold">{actionTitle}</h2>
-                    </div>
-                    {Object.keys(inputs).map((input) => (
-                        <InputField key={input} inputTitle={input} entity={entity} />
-                    ))}
-
-                    {/* <textarea
-                        className="input-btn-lg"
-                        placeholder="Description"
-                        name="description"
-                        value={boardData.description}
-                        onChange={handleInputChange}
-                    ></textarea> */}
-                    <div className="popup-btns flex space-between">
-                        <button className="primary-btn border-radius" onClick={handleCreateBoard}>
-                            Create
-                        </button>
-                        <button className="secondary-btn border-radius" onClick={() => setIsPopupOpen(false)}>
-                            Cancel
-                        </button>
-                    </div>
+            <>
+                <div
+                    className="board-card secondary-bg flex column center box-shadow border"
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <p className="size-l bold" onClick={() => navigate(`/board/${board._id}`)}>
+                        {board.title}
+                    </p>
+                    <p className="size-m">{board.description}</p>
+                    {isHovered && (
+                        <FontAwesomeIcon
+                            icon={faEdit}
+                            className="board-card-icon light-text"
+                            onClick={() =>
+                                setIsPopupOpen({
+                                    type: 'edit',
+                                    entity: 'board',
+                                    actionTitle: 'Edit board',
+                                    isOpen: true,
+                                })
+                            }
+                        />
+                    )}
                 </div>
-            </div>
+                {isPopupOpen.isOpen === true && isPopupOpen.type === 'edit' && (
+                    <EditPopup
+                        handleProceed={() => handleBoardEdit(board._id)}
+                        handleInputChange={handleInputChange}
+                        handleCancel={handleCancel}
+                        handleDelete={() => handleBoardDelete(board._id)}
+                        isPopupOpen={isPopupOpen}
+                        title={'title'}
+                        description={'description'}
+                    />
+                )}
+            </>
         );
     };
 
@@ -122,7 +132,17 @@ const Boards = () => {
         <>
             <div className="boards-header flex space-between">
                 <h1 className="size-xl bold">Boards</h1>
-                <button className="primary-btn border-radius" onClick={() => setIsPopupOpen(true)}>
+                <button
+                    className="primary-btn border-radius"
+                    onClick={() =>
+                        setIsPopupOpen({
+                            type: 'create',
+                            entity: 'board',
+                            actionTitle: 'Create new board',
+                            isOpen: true,
+                        })
+                    }
+                >
                     Create new board
                 </button>
             </div>
@@ -133,7 +153,16 @@ const Boards = () => {
                     <p className="size-l bold">No boards yet</p>
                 )}
             </div>
-            {isPopupOpen && <AddBoardPopup actionTitle={'Create new board'} entity={'board'} title='title' description='description'/>}
+            {isPopupOpen.isOpen === true && isPopupOpen.type === 'create' && (
+                <EditPopup
+                    handleProceed={handleCreateBoard}
+                    handleInputChange={handleInputChange}
+                    handleCancel={handleCancel}
+                    isPopupOpen={isPopupOpen}
+                    title={'title'}
+                    description={'description'}
+                />
+            )}
         </>
     );
 };

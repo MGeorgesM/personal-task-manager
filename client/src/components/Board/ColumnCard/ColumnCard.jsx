@@ -25,21 +25,22 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
         setNewTaskData({ ...newTaskData, [e.target.name]: e.target.value });
     };
 
-    const handleColumnDelete = async (columnId) => {
+    const handleColumnDelete = async () => {
         try {
-            const response = await sendRequest(requestMethods.DELETE, `/columns/${columnId}`, null);
+            const response = await sendRequest(requestMethods.DELETE, `/columns/${column._id}`, null);
             if (response.status !== 200) throw new Error();
-            dispatch(deleteColumn(columnId));
+            dispatch(deleteColumn(column._id));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleColumnEdit = async (columnId) => {
+    const handleColumnEdit = async () => {
         try {
-            const response = await sendRequest(requestMethods.PUT, `/columns/${columnId}`, { columnData });
+            const response = await sendRequest(requestMethods.PUT, `/columns/${column._id}`, { ...columnData });
             if (response.status !== 200) throw new Error();
+            console.log(response.data)
             dispatch(updateColumn(response.data));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {
@@ -75,7 +76,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
         try {
             const response = await sendRequest(requestMethods.DELETE, `/tasks/${taskId}`, null);
             if (response.status !== 200) throw new Error();
-            dispatch(deleteTask(columnId, taskId));
+            dispatch(deleteTask({columnId, taskId}));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {
             console.log(error);
@@ -89,7 +90,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                     <div className="popup-header">
                         <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
                     </div>
-
+    
                     <input
                         className="input-btn-lg"
                         type="text"
@@ -98,16 +99,16 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                         value={data.title}
                         onChange={handleInputChange}
                     />
-
-                    <input
+    
+                    {isPopupOpen.entity !== 'column' && <input
                         className="input-btn-lg"
                         type="text"
                         placeholder="description"
                         name="description"
                         value={data.description}
                         onChange={handleInputChange}
-                    />
-
+                    />}
+    
                     <div className="popup-btns flex space-between">
                         <button className="primary-btn border-radius" onClick={handleProceed}>
                             Submit
@@ -125,7 +126,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
             </div>
         );
     };
-
+    
     const TaskCard = ({ task, onDragStart }) => {
         const [taskData, setTaskData] = useState({ title: task.title, description: task.description });
         const [isHovered, setIsHovered] = useState(false);
@@ -160,7 +161,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                         />
                     )}
                 </div>
-                {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && (
+                {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'edit' && (
                     <EditPopup
                         handleProceed={() => handleTaskEdit(column._id, task._id, taskData)}
                         handleInputChange={handleTaskInputsChange}
@@ -182,8 +183,14 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
             <div className="column-header padding-m border-btm bold">
                 <p
                     className="size-l"
-                    // onMouseEnter={() => setIsHovered(true)}
-                    // onMouseLeave={() => setIsHovered(false)}
+                    onClick={() =>
+                        setIsPopupOpen({
+                            type: 'edit',
+                            entity: 'column',
+                            actionTitle: 'Edit column',
+                            isOpen: true,
+                        })
+                    }
                 >
                     {column.title}
                 </p>
@@ -193,7 +200,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                     onClick={() =>
                         setIsPopupOpen({
                             type: 'create',
-                            entity: 'column',
+                            entity: 'task',
                             actionTitle: 'Add task',
                             isOpen: true,
                         })
@@ -204,12 +211,21 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                 column.tasks.map((task) => (
                     <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} />
                 ))}
-            {isPopupOpen.isOpen === true && isPopupOpen.entity === 'column' && (
+            {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'create' && (
                 <EditPopup
                     handleProceed={() => handleCreateTask (column._id, newTaskData)}
                     handleInputChange={handleNewTaskInputChange}
                     handleCancel={handleCancel}
                     data={newTaskData}
+                />
+            )}
+            {isPopupOpen.isOpen === true && isPopupOpen.entity === 'column' && isPopupOpen.type === 'edit' && (
+                <EditPopup
+                    handleProceed={() => handleColumnEdit (column._id, columnData)}
+                    handleInputChange={handleColumnInputChange}
+                    handleCancel={handleCancel}
+                    handleDelete={handleColumnDelete}
+                    data={columnData}
                 />
             )}
         </div>

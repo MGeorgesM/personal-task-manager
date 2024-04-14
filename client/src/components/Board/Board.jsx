@@ -73,14 +73,6 @@ const Board = () => {
         }
     };
 
-    const handleInputChange = (e) => {
-        setBoardData({ ...boardData, [e.target.name]: e.target.value });
-    };
-
-    const handleCancel = (e) => {
-        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
-    };
-
 
     if (selectedBoard)
         return (

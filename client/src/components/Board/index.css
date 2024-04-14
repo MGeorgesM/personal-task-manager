@@ -27,6 +27,10 @@
     position: relative;
 }
 
+.column-header > p {
+    cursor: pointer;
+}
+
 .task-card {
     border-bottom: 1px solid #dbdbdb;
     position: relative;

@@ -6,9 +6,10 @@ import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setSelectedBoard } from '../../store/SelectedBoard';
 
 import ColumnCard from './ColumnCard/ColumnCard';
-import EditPopup from '../Elements/EditPopup/EditPopup';
 
 import './index.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Board = () => {
     const { id } = useParams();
@@ -22,10 +23,8 @@ const Board = () => {
         actionTitle: '',
         isOpen: false,
     });
-    const [boardData, setBoardData] = useState({
-        title: selectedBoard?.title || '',
-        description: selectedBoard?.description || '',
-    });
+
+    const [newColumnData, setNewColumnData] = useState({});
 
     useEffect(() => {
         const getBoardData = async () => {
@@ -73,6 +72,73 @@ const Board = () => {
         }
     };
 
+    const handleCreateColumn = async () => {
+        try {
+            const response = await sendRequest(requestMethods.POST, '/columns', {
+                ...newColumnData,
+                boardId: selectedBoard._id,
+            });
+            if (response.status !== 201) throw new Error();
+            dispatch(setSelectedBoard({ ...selectedBoard, columns: [...selectedBoard.columns, response.data] }));
+            setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleCreateColumnCancel = () => {
+        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
+    };
+
+    const handleCreateColumnInputChange = (e) => {
+        setNewColumnData({ ...newColumnData, [e.target.name]: e.target.value });
+    };
+
+    const EditPopup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, data }) => {
+        return (
+            <div className="popup-container flex center black-bg-trsp">
+                <div className="popup-main white-bg flex column center box-shadow border border-radius">
+                    <div className="popup-header">
+                        <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
+                    </div>
+
+                    <input
+                        className="input-btn-lg"
+                        type="text"
+                        placeholder="title"
+                        name="title"
+                        value={data.title}
+                        onChange={handleInputChange}
+                    />
+
+                    {isPopupOpen.entity !== 'column' && (
+                        <input
+                            className="input-btn-lg"
+                            type="text"
+                            placeholder="description"
+                            name="description"
+                            value={data.description}
+                            onChange={handleInputChange}
+                        />
+                    )}
+
+                    <div className="popup-btns flex space-between">
+                        <button className="primary-btn border-radius" onClick={handleProceed}>
+                            Submit
+                        </button>
+                        <button className="secondary-btn border-radius" onClick={handleCancel}>
+                            Cancel
+                        </button>
+                        {handleDelete && (
+                            <button className="secondary-btn border-radius" onClick={handleDelete}>
+                                Delete
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
     if (selectedBoard)
         return (
@@ -82,6 +148,18 @@ const Board = () => {
                         <div className="board-overview-header flex column center">
                             <p className="size-xl bold">{selectedBoard.title}</p>
                             <p className="size-m">{selectedBoard.description}</p>
+                            <FontAwesomeIcon
+                                icon={faPlusCircle}
+                                className="board-card-icon light-text"
+                                onClick={() =>
+                                    setIsPopupOpen({
+                                        type: 'create',
+                                        entity: 'column',
+                                        actionTitle: 'Add column',
+                                        isOpen: true,
+                                    })
+                                }
+                            />
                         </div>
                         <div className="board-overview-columns flex">
                             {selectedBoard.columns.length > 0 &&
@@ -97,7 +175,14 @@ const Board = () => {
                         </div>
                     </div>
                 </div>
-                {isPopupOpen.isOpen === true && isPopupOpen.entity === 'board' && <EditPopup />}
+                {isPopupOpen.isOpen === true && isPopupOpen.entity === 'column' && (
+                    <EditPopup
+                        handleProceed={handleCreateColumn}
+                        handleInputChange={handleCreateColumnInputChange}
+                        handleCancel={handleCreateColumnCancel}
+                        data={newColumnData}
+                    />
+                )}
             </>
         );
 };

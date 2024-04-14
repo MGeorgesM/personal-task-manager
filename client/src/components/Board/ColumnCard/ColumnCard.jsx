@@ -20,10 +20,6 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
 
     const dispatch = useDispatch();
 
-    const handleCancel = (e) => {
-        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
-    };
-
     const handleColumnInputChange = (e) => {
         setColumnData({ ...columnData, [e.target.name]: e.target.value });
     };
@@ -66,100 +62,6 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
         }
     };
 
-
-    // const Popup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, data }) => {
-    //     return (
-    //         <div className="popup-container flex center black-bg-trsp">
-    //             <div className="popup-main white-bg flex column center box-shadow border border-radius">
-    //                 <div className="popup-header">
-    //                     <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
-    //                 </div>
-
-    //                 <input
-    //                     className="input-btn-lg"
-    //                     type="text"
-    //                     placeholder="title"
-    //                     name="title"
-    //                     value={data.title}
-    //                     onChange={handleInputChange}
-    //                 />
-
-    //                 {isPopupOpen.entity !== 'column' && (
-    //                     <input
-    //                         className="input-btn-lg"
-    //                         type="text"
-    //                         placeholder="description"
-    //                         name="description"
-    //                         value={data.description}
-    //                         onChange={handleInputChange}
-    //                     />
-    //                 )}
-
-    //                 <div className="popup-btns flex space-between">
-    //                     <button className="primary-btn border-radius" onClick={handleProceed}>
-    //                         Submit
-    //                     </button>
-    //                     <button className="secondary-btn border-radius" onClick={handleCancel}>
-    //                         Cancel
-    //                     </button>
-    //                     {handleDelete && (
-    //                         <button className="secondary-btn border-radius" onClick={handleDelete}>
-    //                             Delete
-    //                         </button>
-    //                     )}
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-
-    // const TaskCard = ({ task, onDragStart }) => {
-    //     const [taskData, setTaskData] = useState({ title: task.title, description: task.description });
-    //     const [isHovered, setIsHovered] = useState(false);
-
-    //     const handleTaskInputsChange = (e) => {
-    //         setTaskData({ ...taskData, [e.target.name]: e.target.value });
-    //     };
-
-    //     return (
-    //         <>
-    //             <div
-    //                 className="padding-m task-card"
-    //                 draggable="true"
-    //                 onDragStart={(e) => onDragStart(e)}
-    //                 onMouseEnter={() => setIsHovered(true)}
-    //                 onMouseLeave={() => setIsHovered(false)}
-    //             >
-    //                 <p className="size-m boder">{taskData.title}</p>
-    //                 <p className="size-m boder light-text">{taskData.description}</p>
-    //                 {isHovered && (
-    //                     <FontAwesomeIcon
-    //                         icon={faEdit}
-    //                         className="board-card-icon light-text"
-    //                         onClick={() =>
-    //                             setIsPopupOpen({
-    //                                 type: 'edit',
-    //                                 entity: 'task',
-    //                                 actionTitle: 'Edit task',
-    //                                 isOpen: true,
-    //                             })
-    //                         }
-    //                     />
-    //                 )}
-    //             </div>
-    //             {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'edit' && (
-    //                 <Popup
-    //                     handleProceed={() => handleTaskEdit(column._id, task._id, taskData)}
-    //                     handleInputChange={handleTaskInputsChange}
-    //                     handleCancel={handleCancel}
-    //                     handleDelete={() => handleTaskDelete(column._id, task._id)}
-    //                     data={taskData}
-    //                 />
-    //             )}
-    //         </>
-    //     );
-    // };
-
     return (
         <div
             className="board-overview-column-card light-gray-bg border border-radius-m box-shadow"
@@ -201,7 +103,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                 <Popup
                     handleProceed={() => handleCreateTask(column._id, newTaskData)}
                     handleInputChange={handleNewTaskInputChange}
-                    handleCancel={handleCancel}
+                    handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                     isPopupOpen={isPopupOpen}
                     data={newTaskData}
                 />
@@ -210,7 +112,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                 <Popup
                     handleProceed={() => handleColumnEdit(column._id, columnData)}
                     handleInputChange={handleColumnInputChange}
-                    handleCancel={handleCancel}
+                    handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                     handleDelete={handleColumnDelete}
                     isPopupOpen={isPopupOpen}
                     data={columnData}

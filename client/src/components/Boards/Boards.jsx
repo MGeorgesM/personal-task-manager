@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setBoards } from '../../store/Boards';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import BoardCard from './BoardCard/BoardCard';
+import Popup from '../Elements/Popup/Popup';
 
 import './index.css';
-import '../Elements/Popup/index.css';
-import Popup from '../Elements/Popup/Popup';
 
 const Boards = () => {
     const [newBoardData, setNewBoardData] = useState({
@@ -23,6 +20,7 @@ const Boards = () => {
         actionTitle: '',
         isOpen: false,
     });
+
     const boards = useSelector((global) => global.boardsSlice.boards);
     const dispatch = useDispatch();
 
@@ -45,10 +43,6 @@ const Boards = () => {
         setNewBoardData({ ...newBoardData, [e.target.name]: e.target.value });
     };
 
-    const handleCancel = (e) => {
-        setIsPopupOpen({ ...isPopupOpen, isOpen: false });
-    };
-
     const handleCreateBoard = async () => {
         try {
             const response = await sendRequest(requestMethods.POST, '/boards', newBoardData);
@@ -60,7 +54,6 @@ const Boards = () => {
         }
     };
 
-    
     return (
         <>
             <div className="boards-header flex space-between">
@@ -90,7 +83,7 @@ const Boards = () => {
                 <Popup
                     handleProceed={handleCreateBoard}
                     handleInputChange={handleNewBoardInputChange}
-                    handleCancel={handleCancel}
+                    handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                     isPopupOpen={isPopupOpen}
                     data={newBoardData}
                 />

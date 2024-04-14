@@ -10,6 +10,8 @@ import Popup from '../../Elements/Popup/Popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
+import '../index.css';
+
 const BoardCard = ({ board, boards }) => {
     const [isHovered, setIsHovered] = useState(false);
 

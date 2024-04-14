@@ -1,3 +1,6 @@
+
+import './index.css'
+
 const Popup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, isPopupOpen, data }) => {
     
     return (

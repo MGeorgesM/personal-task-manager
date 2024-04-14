@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { updateTask, deleteTask, deleteColumn, updateColumn } from '../../../store/SelectedBoard';
+import { updateTask, deleteTask, deleteColumn, updateColumn, addTask } from '../../../store/SelectedBoard';
 import { useDispatch } from 'react-redux';
 import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -49,9 +49,9 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
 
     const handleCreateTask = async (columnId, newTaskData) => {
         try {
-            const response = await sendRequest(requestMethods.POST, '/tasks', newTaskData);
+            const response = await sendRequest(requestMethods.POST, '/tasks', {...newTaskData, columnId});
             if (response.status !== 201) throw new Error();
-            dispatch(updateTask({columnId, task: response.data}));
+            dispatch(addTask({columnId, task: response.data}));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {
             console.log(error);
@@ -206,7 +206,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                 ))}
             {isPopupOpen.isOpen === true && isPopupOpen.entity === 'column' && (
                 <EditPopup
-                    handleProceed={handleCreateTask}
+                    handleProceed={() => handleCreateTask (column._id, newTaskData)}
                     handleInputChange={handleNewTaskInputChange}
                     handleCancel={handleCancel}
                     data={newTaskData}

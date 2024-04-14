@@ -44,7 +44,6 @@ const selectedBoardSlice = createSlice({
 
         updateTask: (state, action) => {
             const { columnId, task } = action.payload;
-            console.log(action.payload)
             const columnIndex = state.selectedBoard.columns.findIndex((column) => column._id === columnId);
             if (columnIndex !== -1) {
                 const taskIndex = state.selectedBoard.columns[columnIndex].tasks.findIndex((t) => t._id === task._id);

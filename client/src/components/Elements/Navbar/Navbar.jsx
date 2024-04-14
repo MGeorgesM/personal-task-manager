@@ -25,10 +25,20 @@ const Navbar = ({ bg = 'no-bg' }) => {
     return (
         <div className={`navbar ${navBg}`}>
             <nav className="nav-elements flex space-between light">
-                <img className="logo" alt="logo" src="./assets/images/logo.png" onClick={token ? () => navigate('/') : null} />
+                <img
+                    className="logo"
+                    alt="logo"
+                    src="./assets/images/logo.png"
+                    onClick={token ? () => navigate('/') : null}
+                />
                 <div>
                     <div className="nav-list flex center">
-                        <button className="nav-link no-bg" onClick={()=>navigate('/analytics')}>Analytics</button>
+                        <button className="nav-link no-bg" onClick={() => navigate('/analytics')}>
+                            Analytics
+                        </button>
+                        <button className="nav-link no-bg" onClick={() => navigate('/')}>
+                            Boards
+                        </button>
                         <button
                             className={`nav-login ${token ? 'secondary-btn' : 'primary-btn'} box-shadow border-radius`}
                             onClick={handleClick}

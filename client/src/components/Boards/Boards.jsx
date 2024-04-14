@@ -7,6 +7,9 @@ import { setBoards } from '../../store/Boards';
 import BoardCard from './BoardCard/BoardCard';
 import Popup from '../Elements/Popup/Popup';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+
 import './index.css';
 
 const Boards = () => {
@@ -59,20 +62,7 @@ const Boards = () => {
     return (
         <div className='boards-container expand'>
             <div className="boards-header flex space-between">
-                <h1 className="size-xl bold">Boards</h1>
-                <button
-                    className="primary-btn border-radius"
-                    onClick={() =>
-                        setIsPopupOpen({
-                            type: 'create',
-                            entity: 'board',
-                            actionTitle: 'Create new board',
-                            isOpen: true,
-                        })
-                    }
-                >
-                    Create new board
-                </button>
+                <h1 className="size-xl bold">Your Boards</h1>
             </div>
             <div className="boards-main flex">
                 {boards.length > 0 ? (
@@ -90,6 +80,18 @@ const Boards = () => {
                     data={newBoardData}
                 />
             )}
+                        <FontAwesomeIcon
+                                icon={faPlusCircle}
+                                className="add-btn float-bottom-right primary-text scale box-shadow"
+                                onClick={() =>
+                                    setIsPopupOpen({
+                                        type: 'create',
+                                        entity: 'board',
+                                        actionTitle: 'Create new board',
+                                        isOpen: true,
+                                    })
+                                }
+                            />
         </div>
     );
 };

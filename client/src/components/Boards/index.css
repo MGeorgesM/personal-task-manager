@@ -16,6 +16,7 @@
 .board-card:hover {
     background-color: #f2f2f2;
     cursor: pointer;
+    transform: translateY(-1%);
 }
 
 .board-card > p {

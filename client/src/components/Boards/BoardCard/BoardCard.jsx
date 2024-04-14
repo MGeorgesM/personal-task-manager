@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 import { deleteBoard, setBoards } from '../../../store/Boards';
 
 import Popup from '../../Elements/Popup/Popup';
-import ConfirmationPopup from '../../Elements/ConfirmationPopup/ConfirmationPopup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -73,7 +72,7 @@ const BoardCard = ({ board }) => {
                 {isHovered && (
                     <FontAwesomeIcon
                         icon={faEdit}
-                        className="board-card-icon light-text"
+                        className="add-btn board-card-icon light-text"
                         onClick={() =>
                             setIsPopupOpen({
                                 type: 'edit',

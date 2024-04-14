@@ -61,7 +61,7 @@ const Analytics = () => {
     }, []);
 
     return (
-        <div className="analytics-main">
+        <div className="analytics-main expand">
             {chartData && (
                 <Pie
                     data={{

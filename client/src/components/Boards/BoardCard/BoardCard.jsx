@@ -3,16 +3,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
 import { useDispatch } from 'react-redux';
-import { setBoards } from '../../../store/Boards';
+import { deleteBoard, setBoards } from '../../../store/Boards';
 
 import Popup from '../../Elements/Popup/Popup';
+import ConfirmationPopup from '../../Elements/ConfirmationPopup/ConfirmationPopup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import '../index.css';
 
-const BoardCard = ({ board, boards }) => {
+const BoardCard = ({ board }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const [boardData, setBoardData] = useState({
@@ -34,9 +35,9 @@ const BoardCard = ({ board, boards }) => {
         setBoardData({ ...boardData, [e.target.name]: e.target.value });
     };
 
-    const handleBoardEdit = async (id) => {
+    const handleBoardEdit = async () => {
         try {
-            const response = await sendRequest(requestMethods.PUT, `/boards/${id}`, boardData);
+            const response = await sendRequest(requestMethods.PUT, `/boards/${board._id}`, boardData);
             if (response.status !== 200) throw new Error();
             console.log(response.data);
             dispatch(setBoards(response.data));
@@ -46,12 +47,12 @@ const BoardCard = ({ board, boards }) => {
         }
     };
 
-    const handleBoardDelete = async (id) => {
+    const handleBoardDelete = async () => {
+        console.log('delete board')
         try {
-            const response = await sendRequest(requestMethods.DELETE, `/boards/${id}`, null);
+            const response = await sendRequest(requestMethods.DELETE, `/boards/${board._id}`, null);
             if (response.status !== 200) throw new Error();
-            const remaingBoards = boards.filter((board) => board._id !== id);
-            dispatch(setBoards(remaingBoards));
+            dispatch(deleteBoard(board._id));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {
             console.log(error);
@@ -84,14 +85,20 @@ const BoardCard = ({ board, boards }) => {
                     />
                 )}
             </div>
-            {isPopupOpen.isOpen === true && isPopupOpen.type === 'edit' && (
+            {isPopupOpen.isOpen === true && isPopupOpen.type !== 'confirm' && (
                 <Popup
-                    handleProceed={() => handleBoardEdit(board._id)}
+                    handleProceed={handleBoardEdit}
                     handleInputChange={handleInputChange}
                     handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
-                    handleDelete={() => handleBoardDelete(board._id)}
+                    handleDelete={() => setIsPopupOpen({ ...isPopupOpen, type: 'confirm' })}
                     isPopupOpen={isPopupOpen}
                     data={boardData}
+                />
+            )}
+            {isPopupOpen.isOpen === true && isPopupOpen.type === 'confirm' && (
+                <ConfirmationPopup
+                    handleProceed={handleBoardDelete}
+                    handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                 />
             )}
         </>

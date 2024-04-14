@@ -8,12 +8,15 @@ const boardsSlice = createSlice({
     name: 'boardsSlice',
     initialState,
     reducers: {
+
         setBoards: (state, action) => {
             state.boards = action.payload;
         },
+
         addBoard: (state, action) => {
             state.boards.push(action.payload);
         },
+
         updateBoard: (state, action) => {
             const { _id, title, description } = action.payload;
             const boardIndex = state.boards.findIndex((board) => board._id === _id);
@@ -22,10 +25,12 @@ const boardsSlice = createSlice({
                 state.boards[boardIndex].description = description || state.boards[boardIndex].description;
             }
         },
+
         deleteBoard: (state, action) => {
             const boardId = action.payload;
             state.boards = state.boards.filter((board) => board._id !== boardId);
         },
+        
     },
 });
 

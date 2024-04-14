@@ -6,7 +6,7 @@ import { useAuthenticationLogic } from './logic';
 import './index.css';
 
 const Authentication = () => {
-    const { isLogin, error, formData, setFormData, navigate, switchHandler, handleLogin, handleSignup } =
+    const { isLogin, error, formData, setFormData, switchHandler, handleLogin, handleSignup } =
         useAuthenticationLogic();
 
     return (
@@ -14,7 +14,7 @@ const Authentication = () => {
             <div className="form-component flex center">
                 <div className="container flex center column">
                     <div className="logo-form flex column center box-shadow border border-radius-s">
-                        <img src="./assets/images/logo.png" alt="logo" onClick={() => navigate('/')} />
+                        <img src="./assets/images/logo.png" alt="logo" />
                         {isLogin ? (
                             <SignInForm
                                 switchHandler={switchHandler}

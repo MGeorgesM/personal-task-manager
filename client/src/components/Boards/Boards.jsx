@@ -12,6 +12,7 @@ import './index.css';
 import '../Elements/EditPopup/index.css';
 
 const Boards = () => {
+    const isLoggedIn = useSelector((global) => global.userSlice.isLoggedIn);
     const boards = useSelector((global) => global.boardsSlice.boards);
     const [newBoardData, setNewBoardData] = useState({
         title: '',
@@ -36,7 +37,7 @@ const Boards = () => {
             }
         };
 
-        getBoards();
+        isLoggedIn && getBoards();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

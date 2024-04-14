@@ -70,5 +70,5 @@ export const useAuthenticationLogic = () => {
             console.log(error.response.data.error);
         }
     };
-    return { isLogin, error, formData, setFormData, navigate, switchHandler, handleLogin, handleSignup };
+    return { isLogin, error, formData, setFormData, switchHandler, handleLogin, handleSignup };
 };

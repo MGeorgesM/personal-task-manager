@@ -18,7 +18,6 @@ const App = () => {
             <AuthenticatedRoutes>
                 <Navbar />
                 <Routes>
-
                     <Route path="/" element={<Boards />} />
                     <Route path="/board/:id" element={<Board />} />
                 </Routes>

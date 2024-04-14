@@ -176,6 +176,12 @@ button {
     height: 30px;
     width: 110px;
     font-size: 16px;
+
+}
+
+.btn {
+    padding: 8px 16px;
+
 }
 
 .btn-l {

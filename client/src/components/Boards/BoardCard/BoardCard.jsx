@@ -90,17 +90,17 @@ const BoardCard = ({ board }) => {
                     handleProceed={handleBoardEdit}
                     handleInputChange={handleInputChange}
                     handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
-                    handleDelete={() => setIsPopupOpen({ ...isPopupOpen, type: 'confirm' })}
+                    handleDelete={handleBoardDelete}
                     isPopupOpen={isPopupOpen}
                     data={boardData}
                 />
             )}
-            {isPopupOpen.isOpen === true && isPopupOpen.type === 'confirm' && (
+            {/* {isPopupOpen.isOpen === true && isPopupOpen.type === 'confirm' && (
                 <ConfirmationPopup
                     handleProceed={handleBoardDelete}
                     handleCancel={() => setIsPopupOpen({ ...isPopupOpen, isOpen: false })}
                 />
-            )}
+            )} */}
         </>
     );
 };

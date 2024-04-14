@@ -100,7 +100,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
             </div>
             {column.tasks.length > 0 &&
                 column.tasks.map((task) => (
-                    <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} />
+                    <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} columnId={column._id} />
                 ))}
             {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'create' && (
                 <Popup

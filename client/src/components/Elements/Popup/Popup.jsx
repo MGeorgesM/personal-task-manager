@@ -1,75 +1,58 @@
-import React from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
-import './index.css';
-
-const Popup = ({
-    handleContinue,
-    handleImageSelect,
-    handleImageUpload,
-    handleCaptionChange,
-    caption,
-    setCaption,
-    image,
-    setImage,
-    setShowPopup,
-}) => {
+const Popup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, isPopupOpen, data }) => {
+    
     return (
-        <div className="popupmain flex column center black-bg-trsp">
-            <div className="exit-btn white-text flex center">
-                <FontAwesomeIcon
-                    icon={faXmark}
-                    onClick={() => {
-                        setShowPopup(false);
-                        setImage(null);
-                        setCaption('');
-                    }}
-                />
-            </div>
-            <div className="popupmain-inner white-bg flex column space-between box-shadow border-radius-m">
-                <div className="popup-header flex center">
-                    <h1 className="size-l bold">Create a new post</h1>
-                </div>
-                {image && <img src={image} alt="post" />}
-                {!image && (
-                    <div className="popup-image flex column center">
-                        <img src="./images/assets/new-post.jpg" alt="" />
-                        <label
-                            htmlFor="image-upload"
-                            className="upload-btn primary-btn flex center border-radius size-m"
-                        >
-                            Select from computer
-                        </label>
-                    </div>
-                )}
-                <div className="upload-caption white-bg flex">
-                    {image && (
-                        <>
-                            <input
-                                type="text"
-                                placeholder="Enter caption"
-                                value={caption}
-                                onChange={handleCaptionChange}
-                            />
-                            <button className="share-btn bold size-m no-bg primary-text" onClick={handleImageUpload}>
-                                Share
-                            </button>
-                        </>
-                    )}
+        <div className="popup-container flex center black-bg-trsp">
+            <div className="popup-main white-bg flex column center box-shadow border border-radius">
+                <div className="popup-header">
+                    <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
                 </div>
 
-                <div className="image-upload hidden">
-                    <div className="popupmain-image">
+                {Object.keys(data).map((property, index) => {
+                    return (
                         <input
-                            type="file"
-                            id="image-upload"
-                            accept="image/*"
-                            name="image"
-                            onChange={handleImageSelect}
+                            key={index}
+                            className="input-btn-lg"
+                            type="text"
+                            placeholder={property}
+                            name={property}
+                            value={data[property]}
+                            onChange={handleInputChange}
                         />
-                    </div>
+                    );
+                })}
+
+                {/* <input
+                    className="input-btn-lg"
+                    type="text"
+                    placeholder="title"
+                    name="title"
+                    value={data.title}
+                    onChange={handleInputChange}
+                />
+
+                {isPopupOpen.entity !== 'column' && (
+                    <input
+                        className="input-btn-lg"
+                        type="text"
+                        placeholder="description"
+                        name="description"
+                        value={data.description}
+                        onChange={handleInputChange}
+                    />
+                )} */}
+
+                <div className="popup-btns flex space-between">
+                    <button className="primary-btn border-radius" onClick={handleProceed}>
+                        Submit
+                    </button>
+                    <button className="secondary-btn border-radius" onClick={handleCancel}>
+                        Cancel
+                    </button>
+                    {handleDelete && (
+                        <button className="secondary-btn border-radius" onClick={handleDelete}>
+                            Delete
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

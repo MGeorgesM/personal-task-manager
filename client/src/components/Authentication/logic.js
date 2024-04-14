@@ -41,7 +41,7 @@ export const useAuthenticationLogic = () => {
 
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 
-                navigate('/boards');
+                navigate('/');
             } else {
                 throw new Error();
             }
@@ -61,7 +61,7 @@ export const useAuthenticationLogic = () => {
 
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 
-                navigate('/boards');
+                navigate('/');
             } else {
                 throw new Error();
             }

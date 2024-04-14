@@ -9,10 +9,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import './index.css';
-import '../Elements/EditPopup/index.css';
+import '../Elements/Popup/index.css';
+import Popup from '../Elements/Popup/Popup';
 
 const Boards = () => {
-    const isLoggedIn = useSelector((global) => global.userSlice.isLoggedIn);
     const boards = useSelector((global) => global.boardsSlice.boards);
     const [newBoardData, setNewBoardData] = useState({
         title: '',
@@ -37,7 +37,7 @@ const Boards = () => {
             }
         };
 
-        isLoggedIn && getBoards();
+        getBoards();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -60,51 +60,51 @@ const Boards = () => {
         }
     };
 
-    const EditPopup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, data }) => {
-        return (
-            <div className="popup-container flex center black-bg-trsp">
-                <div className="popup-main white-bg flex column center box-shadow border border-radius">
-                    <div className="popup-header">
-                        <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
-                    </div>
+    // const Popup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, data }) => {
+    //     return (
+    //         <div className="popup-container flex center black-bg-trsp">
+    //             <div className="popup-main white-bg flex column center box-shadow border border-radius">
+    //                 <div className="popup-header">
+    //                     <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
+    //                 </div>
 
-                    <input
-                        className="input-btn-lg"
-                        type="text"
-                        placeholder="title"
-                        name="title"
-                        value={data.title}
-                        onChange={handleInputChange}
-                    />
+    //                 <input
+    //                     className="input-btn-lg"
+    //                     type="text"
+    //                     placeholder="title"
+    //                     name="title"
+    //                     value={data.title}
+    //                     onChange={handleInputChange}
+    //                 />
 
-                    {isPopupOpen.entity !== 'column' && (
-                        <input
-                            className="input-btn-lg"
-                            type="text"
-                            placeholder="description"
-                            name="description"
-                            value={data.description}
-                            onChange={handleInputChange}
-                        />
-                    )}
+    //                 {isPopupOpen.entity !== 'column' && (
+    //                     <input
+    //                         className="input-btn-lg"
+    //                         type="text"
+    //                         placeholder="description"
+    //                         name="description"
+    //                         value={data.description}
+    //                         onChange={handleInputChange}
+    //                     />
+    //                 )}
 
-                    <div className="popup-btns flex space-between">
-                        <button className="primary-btn border-radius" onClick={handleProceed}>
-                            Submit
-                        </button>
-                        <button className="secondary-btn border-radius" onClick={handleCancel}>
-                            Cancel
-                        </button>
-                        {handleDelete && (
-                            <button className="secondary-btn border-radius" onClick={handleDelete}>
-                                Delete
-                            </button>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    };
+    //                 <div className="popup-btns flex space-between">
+    //                     <button className="primary-btn border-radius" onClick={handleProceed}>
+    //                         Submit
+    //                     </button>
+    //                     <button className="secondary-btn border-radius" onClick={handleCancel}>
+    //                         Cancel
+    //                     </button>
+    //                     {handleDelete && (
+    //                         <button className="secondary-btn border-radius" onClick={handleDelete}>
+    //                             Delete
+    //                         </button>
+    //                     )}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     const BoardCard = ({ board }) => {
         const [boardData, setBoardData] = useState({
@@ -167,11 +167,12 @@ const Boards = () => {
                     )}
                 </div>
                 {isPopupOpen.isOpen === true && isPopupOpen.type === 'edit' && (
-                    <EditPopup
+                    <Popup
                         handleProceed={() => handleBoardEdit(board._id)}
                         handleInputChange={handleInputChange}
                         handleCancel={handleCancel}
                         handleDelete={() => handleBoardDelete(board._id)}
+                        isPopupOpen={isPopupOpen}
                         data={boardData}
                     />
                 )}
@@ -205,7 +206,7 @@ const Boards = () => {
                 )}
             </div>
             {isPopupOpen.isOpen === true && isPopupOpen.type === 'create' && (
-                <EditPopup
+                <Popup
                     handleProceed={handleCreateBoard}
                     handleInputChange={handleNewBoardInputChange}
                     handleCancel={handleCancel}

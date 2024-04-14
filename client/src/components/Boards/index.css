@@ -1,6 +1,9 @@
 .boards-container {
+ height: max-content;
+}
+
+.boards-main {
     width: 100%;
-    min-height: 100vh;
 }
 
 .board-card {
@@ -18,6 +21,10 @@
 .board-card > p {
     max-width: 90%;
     text-align: center;
+}
+
+.board-card > p:first-child:hover {
+    color: #0095f6;
 }
 
 .board-card-icon {

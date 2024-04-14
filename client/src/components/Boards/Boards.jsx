@@ -57,7 +57,7 @@ const Boards = () => {
     };
 
     return (
-        <>
+        <div className='boards-container expand'>
             <div className="boards-header flex space-between">
                 <h1 className="size-xl bold">Boards</h1>
                 <button
@@ -74,7 +74,7 @@ const Boards = () => {
                     Create new board
                 </button>
             </div>
-            <div className="boards-container flex">
+            <div className="boards-main flex">
                 {boards.length > 0 ? (
                     boards.map((board) => <BoardCard key={board._id} board={board} />)
                 ) : (
@@ -90,7 +90,7 @@ const Boards = () => {
                     data={newBoardData}
                 />
             )}
-        </>
+        </div>
     );
 };
 

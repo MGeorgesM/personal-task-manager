@@ -7,6 +7,7 @@ import Analytics from './components/Analytics/Analytics';
 import Boards from './components/Boards/Boards';
 import Board from './components/Board/Board';
 import Navbar from './components/Elements/Navbar/Navbar';
+import Footer from './components/Elements/Footer/Footer';
 
 import './App.css';
 import './styles/colors.css';
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="/board/:id" element={<Board />} />
                     <Route path="/analytics" element={<Analytics />} />
                 </Routes>
+                <Footer/>
             </AuthenticatedRoutes>
             <GuestRoutes>
                 <Routes>

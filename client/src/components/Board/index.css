@@ -1,14 +1,9 @@
 .board-overview-container {
     width: 100%;
-    height: 100vh;
-}
-
-.board-overview-main {
-    height: 100%;
 }
 
 .board-overview-header {
-    margin: 12px 0;
+    margin-bottom: 12px;
     position: relative;
 }
 
@@ -28,8 +23,14 @@
     position: relative;
 }
 
-.column-header > p {
+.column-header > p:hover {
     cursor: pointer;
+    color: #0095f6;
+}
+
+.add-btn:hover {
+    cursor: pointer;
+    color: #4cb5f9;
 }
 
 .task-card {

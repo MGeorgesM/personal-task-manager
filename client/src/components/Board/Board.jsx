@@ -96,72 +96,14 @@ const Board = () => {
         setNewColumnData({ ...newColumnData, [e.target.name]: e.target.value });
     };
 
-    // const Popup = ({ handleProceed, handleCancel, handleDelete, handleInputChange, data }) => {
-    //     return (
-    //         <div className="popup-container flex center black-bg-trsp">
-    //             <div className="popup-main white-bg flex column center box-shadow border border-radius">
-    //                 <div className="popup-header">
-    //                     <h2 className="size-l bold">{isPopupOpen.actionTitle}</h2>
-    //                 </div>
-
-    //                 <input
-    //                     className="input-btn-lg"
-    //                     type="text"
-    //                     placeholder="title"
-    //                     name="title"
-    //                     value={data.title}
-    //                     onChange={handleInputChange}
-    //                 />
-
-    //                 {isPopupOpen.entity !== 'column' && (
-    //                     <input
-    //                         className="input-btn-lg"
-    //                         type="text"
-    //                         placeholder="description"
-    //                         name="description"
-    //                         value={data.description}
-    //                         onChange={handleInputChange}
-    //                     />
-    //                 )}
-
-    //                 <div className="popup-btns flex space-between">
-    //                     <button className="primary-btn border-radius" onClick={handleProceed}>
-    //                         Submit
-    //                     </button>
-    //                     <button className="secondary-btn border-radius" onClick={handleCancel}>
-    //                         Cancel
-    //                     </button>
-    //                     {handleDelete && (
-    //                         <button className="secondary-btn border-radius" onClick={handleDelete}>
-    //                             Delete
-    //                         </button>
-    //                     )}
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-
     if (selectedBoard)
         return (
             <>
-                <div className="board-overview-container">
+                <div className="board-overview-container expand">
                     <div className="board-overview-main">
                         <div className="board-overview-header flex column center">
                             <p className="size-xl bold">{selectedBoard.title}</p>
                             <p className="size-m">{selectedBoard.description}</p>
-                            <FontAwesomeIcon
-                                icon={faPlusCircle}
-                                className="board-card-icon light-text"
-                                onClick={() =>
-                                    setIsPopupOpen({
-                                        type: 'create',
-                                        entity: 'column',
-                                        actionTitle: 'Add column',
-                                        isOpen: true,
-                                    })
-                                }
-                            />
                         </div>
                         <div className="board-overview-columns flex">
                             {selectedBoard.columns.length > 0 ? (
@@ -189,6 +131,18 @@ const Board = () => {
                         data={newColumnData}
                     />
                 )}
+                <FontAwesomeIcon
+                                icon={faPlusCircle}
+                                className="add-btn float-bottom-right primary-text scale box-shadow"
+                                onClick={() =>
+                                    setIsPopupOpen({
+                                        type: 'create',
+                                        entity: 'column',
+                                        actionTitle: 'Add column',
+                                        isOpen: true,
+                                    })
+                                }
+                            />
             </>
         );
 };

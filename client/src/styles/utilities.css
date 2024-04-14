@@ -202,6 +202,20 @@ button {
     padding: 32px;
 }
 
+.float-bottom-right {
+    position: fixed;
+    bottom: 20%;
+    right:7.5%;
+}
+
+.scale {
+    scale: 2.5;
+}
+
+.expand {
+    height: calc(100vh - 240px);
+}
+
 .hidden {
     display: none;
 }

@@ -87,7 +87,7 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
                 </p>
                 <FontAwesomeIcon
                     icon={faPlusCircle}
-                    className="board-card-icon light-text"
+                    className="board-card-icon light-text add-btn"
                     onClick={() =>
                         setIsPopupOpen({
                             type: 'create',

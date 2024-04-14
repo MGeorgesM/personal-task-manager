@@ -1,6 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 
+import AuthenticatedRoutes from './components/ProtectedRoutes/AuthenticatedRoutes';
 import Authentication from './components/Authentication/Authentication';
+import GuestRoutes from './components/ProtectedRoutes/GuestRoutes';
+import Analytics from './components/Analytics/Analytics';
 import Boards from './components/Boards/Boards';
 import Board from './components/Board/Board';
 import Navbar from './components/Elements/Navbar/Navbar';
@@ -9,8 +12,6 @@ import './App.css';
 import './styles/colors.css';
 import './styles/utilities.css';
 import './styles/queries.css';
-import AuthenticatedRoutes from './components/ProtectedRoutes/AuthenticatedRoutes';
-import GuestRoutes from './components/ProtectedRoutes/GuestRoutes';
 
 const App = () => {
     return (
@@ -20,6 +21,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Boards />} />
                     <Route path="/board/:id" element={<Board />} />
+                    <Route path="/analytics" element={<Analytics />} />
                 </Routes>
             </AuthenticatedRoutes>
             <GuestRoutes>

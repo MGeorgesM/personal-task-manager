@@ -27,11 +27,9 @@ const TaskCard = ({ task, columnId, onDragStart }) => {
     };
 
     const handleEdit = async (columnId, taskId, taskData) => {
-        console.log(taskData);
         try {
             const response = await sendRequest(requestMethods.PUT, `/tasks/${taskId}`, taskData);
             if (response.status !== 200) throw new Error();
-            console.log(response.data);
             dispatch(updateTask({ columnId, task: response.data }));
             setIsPopupOpen({ ...isPopupOpen, isOpen: false });
         } catch (error) {

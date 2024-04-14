@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 
-import { updateTask, deleteTask, deleteColumn, updateColumn, addTask } from '../../../store/SelectedBoard';
 import { useDispatch } from 'react-redux';
-import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { deleteColumn, updateColumn, addTask } from '../../../store/SelectedBoard';
+
 import Popup from '../../Elements/Popup/Popup';
 import TaskCard from './TaskCard/TaskCard';
 
+import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+
 const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
-    const [columnData, setColumnData] = useState({ title: '' });
+    const [columnData, setColumnData] = useState({ title: column.title });
     const [newTaskData, setNewTaskData] = useState({ title: '', description: '' });
     const [isPopupOpen, setIsPopupOpen] = useState({
         type: '',

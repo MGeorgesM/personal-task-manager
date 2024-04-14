@@ -9,6 +9,7 @@
 
 .board-overview-header {
     margin: 12px 0;
+    position: relative;
 }
 
 .board-overview-columns {

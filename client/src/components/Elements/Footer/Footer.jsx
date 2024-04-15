@@ -10,7 +10,7 @@ const Footer = () => {
                 <FontAwesomeIcon icon={faTwitter} className='social-i' />
                 <FontAwesomeIcon icon={faFacebook} className='social-i' />
                 <FontAwesomeIcon icon={faInstagram} className='social-i' />
-                <p>Personal Task Manager - Georges Mouawd - April 2024 - Taha Taha - SE Factory</p>
+                <p>Personal Task Manager - Georges Mouawad - April 2024 - Taha Taha - SE Factory</p>
             </div>
             <div className="footer-text">
                 <div className="footer-links flex center">

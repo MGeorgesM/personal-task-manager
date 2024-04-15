@@ -37,7 +37,7 @@ export const useAuthenticationLogic = () => {
             if (response.status === 200) {
 
                 dispatch(setCurrentUser(response.data.user));
-                dispatch(setBoards(response.data.user.boards));
+                // dispatch(setBoards(response.data.user.boards));
 
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 
@@ -57,7 +57,7 @@ export const useAuthenticationLogic = () => {
             if (response.status === 201) {
 
                 dispatch(setCurrentUser(response.data.user));
-                dispatch(setBoards(response.data.user.boards));
+                // dispatch(setBoards(response.data.user.boards));
 
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 

@@ -61,7 +61,7 @@ const Analytics = () => {
     }, []);
 
     return (
-        <div className="analytics-main expand">
+        <div className="analytics-main expand flex center">
             {chartData && (
                 <Pie
                     data={{

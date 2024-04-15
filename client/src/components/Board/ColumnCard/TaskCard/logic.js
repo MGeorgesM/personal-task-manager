@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { sendRequest, requestMethods } from '../../../../core/tools/apiRequest';
 import { updateTask, deleteTask } from '../../../../store/SelectedBoard';
 
-export const useTaskCardLogic = ({ task, columnId }) => {
+export const useTaskCardLogic = (task, columnId) => {
     const [taskData, setTaskData] = useState({ title: task.title, description: task.description });
     const [isHovered, setIsHovered] = useState(false);
     const [isPopupOpen, setIsPopupOpen] = useState({

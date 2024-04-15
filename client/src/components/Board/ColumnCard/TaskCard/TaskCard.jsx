@@ -14,7 +14,7 @@ const TaskCard = ({ task, columnId, onDragStart }) => {
         handleEdit,
         handleTaskInputsChange,
         handleTaskDelete,
-    } = useTaskCardLogic();
+    } = useTaskCardLogic(task, columnId);
 
     return (
         <>

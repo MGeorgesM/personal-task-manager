@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setCurrentUser } from '../../store/User';
-import { setBoards } from '../../store/Boards';
 
 export const useAuthenticationLogic = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -37,8 +36,6 @@ export const useAuthenticationLogic = () => {
             if (response.status === 200) {
 
                 dispatch(setCurrentUser(response.data.user));
-                // dispatch(setBoards(response.data.user.boards));
-
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 
                 navigate('/');
@@ -57,8 +54,6 @@ export const useAuthenticationLogic = () => {
             if (response.status === 201) {
 
                 dispatch(setCurrentUser(response.data.user));
-                // dispatch(setBoards(response.data.user.boards));
-
                 localStorage.setItem('token', JSON.stringify(response.data.token));
 
                 navigate('/');

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { deleteColumn, updateColumn, addTask } from '../../../store/SelectedBoard';
 import { sendRequest, requestMethods } from '../../../core/tools/apiRequest';
 
-export const useColumnCardLogic = ({ column }) => {
+export const useColumnCardLogic = (column) => {
     const [columnData, setColumnData] = useState({ title: column.title });
     const [newTaskData, setNewTaskData] = useState({ title: '', description: '' });
     const [isPopupOpen, setIsPopupOpen] = useState({
@@ -55,5 +55,17 @@ export const useColumnCardLogic = ({ column }) => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    return {
+        columnData,
+        newTaskData,
+        isPopupOpen,
+        setIsPopupOpen,
+        handleColumnEdit,
+        handleCreateTask,
+        handleColumnDelete,
+        handleColumnInputChange,
+        handleNewTaskInputChange,
     };
 };

@@ -6,8 +6,17 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { useColumnCardLogic } from './logic';
 
 const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
-
-    const {} = useColumnCardLogic():
+    const {
+        columnData,
+        isPopupOpen,
+        newTaskData,
+        setIsPopupOpen,
+        handleColumnEdit,
+        handleCreateTask,
+        handleColumnDelete,
+        handleColumnInputChange,
+        handleNewTaskInputChange,
+    } = useColumnCardLogic(column);
     return (
         <div
             className="board-overview-column-card light-gray-bg border border-radius-m box-shadow"
@@ -43,7 +52,12 @@ const ColumnCard = ({ column, onDragOver, onDrop, handleDragStart }) => {
             </div>
             {column.tasks.length > 0 &&
                 column.tasks.map((task) => (
-                    <TaskCard key={task._id} task={task} onDragStart={() => handleDragStart(task)} columnId={column._id} />
+                    <TaskCard
+                        key={task._id}
+                        task={task}
+                        onDragStart={() => handleDragStart(task)}
+                        columnId={column._id}
+                    />
                 ))}
             {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'create' && (
                 <Popup

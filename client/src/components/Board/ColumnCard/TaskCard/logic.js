@@ -41,4 +41,15 @@ export const useTaskCardLogic = ({ task, columnId }) => {
             console.log(error);
         }
     };
+
+    return {
+        isHovered,
+        taskData,
+        setIsPopupOpen,
+        setIsHovered,
+        isPopupOpen,
+        handleEdit,
+        handleTaskInputsChange,
+        handleTaskDelete,
+    };
 };

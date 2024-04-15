@@ -1,16 +1,20 @@
-
-
-
-
 import Popup from '../../../Elements/Popup/Popup';
-
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useTaskCardLogic } from './logic';
 
 const TaskCard = ({ task, columnId, onDragStart }) => {
-    const {isHovered, taskData, setIsPopupOpen, setIsHovered, isPopupOpen, handleEdit, handleTaskInputsChange, handleTaskDelete} = useTaskCardLogic();
+    const {
+        isHovered,
+        taskData,
+        setIsPopupOpen,
+        setIsHovered,
+        isPopupOpen,
+        handleEdit,
+        handleTaskInputsChange,
+        handleTaskDelete,
+    } = useTaskCardLogic();
 
     return (
         <>

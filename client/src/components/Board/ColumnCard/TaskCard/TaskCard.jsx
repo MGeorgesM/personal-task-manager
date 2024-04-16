@@ -28,18 +28,20 @@ const TaskCard = ({ task, columnId, onDragStart }) => {
                 <p className="size-m boder">{taskData.title}</p>
                 <p className="size-m boder light-text">{taskData.description}</p>
                 {isHovered && (
-                    <FontAwesomeIcon
-                        icon={faEdit}
-                        className="board-card-icon light-text"
-                        onClick={() =>
-                            setIsPopupOpen({
-                                type: 'edit',
-                                entity: 'task',
-                                actionTitle: 'Edit task',
-                                isOpen: true,
-                            })
-                        }
-                    />
+                    <>
+                        <FontAwesomeIcon
+                            icon={faEdit}
+                            className="board-card-icon light-text"
+                            onClick={() =>
+                                setIsPopupOpen({
+                                    type: 'edit',
+                                    entity: 'task',
+                                    actionTitle: 'Edit task',
+                                    isOpen: true,
+                                })
+                            }
+                        />
+                    </>
                 )}
             </div>
             {isPopupOpen.isOpen === true && isPopupOpen.entity === 'task' && isPopupOpen.type === 'edit' && (

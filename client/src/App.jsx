@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import AuthenticatedRoutes from './components/ProtectedRoutes/AuthenticatedRoutes';
 import Authentication from './components/Authentication/Authentication';
@@ -15,16 +15,20 @@ import './styles/utilities.css';
 import './styles/queries.css';
 
 const App = () => {
+    const location = useLocation();
+
+    const isAuthRoute = location.pathname === '/auth';
+
     return (
         <>
             <AuthenticatedRoutes>
-                <Navbar />
+                {!isAuthRoute && <Navbar />}
                 <Routes>
                     <Route path="/" element={<Boards />} />
                     <Route path="/board/:id" element={<Board />} />
                     <Route path="/analytics" element={<Analytics />} />
                 </Routes>
-                <Footer/>
+                {!isAuthRoute && <Footer/>}
             </AuthenticatedRoutes>
             <GuestRoutes>
                 <Routes>

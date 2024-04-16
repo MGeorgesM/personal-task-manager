@@ -4,16 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setSelectedBoard } from '../../store/SelectedBoard';
+import { setTags } from '../../store/Tags';
 
 export const useBoardLogic = () => {
-
     const { id } = useParams();
     const dispatch = useDispatch();
 
     const selectedBoard = useSelector((global) => global.selectedBoardSlice.selectedBoard);
+    const userTags = useSelector((global) => global.tagsSlice.tags);
 
     const [draggedTask, setDraggedTask] = useState(null);
-    const [tags, setTags]
+    // const [usertags, setUserTags] = useState({
+    //     name: '',
+    //     color: '',
+    // });
 
     const [isPopupOpen, setIsPopupOpen] = useState({
         type: '',
@@ -39,12 +43,12 @@ export const useBoardLogic = () => {
         const getUserTags = async () => {
             try {
                 const response = await sendRequest(requestMethods.GET, '/tags', null);
-                if(response.status !== 200) throw new Error();
-                dispatch(setSelectedBoard(response.data));
+                if (response.status !== 200) throw new Error();
+                dispatch(setTags(response.data));
             } catch (error) {
-                console.log(error);               
+                console.log(error);
             }
-        }
+        };
         getBoardData();
         getUserTags();
         // eslint-disable-next-line react-hooks/exhaustive-deps

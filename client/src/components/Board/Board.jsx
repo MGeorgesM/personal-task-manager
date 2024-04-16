@@ -11,6 +11,7 @@ import './index.css';
 const Board = () => {
     const {
         isPopupOpen,
+        userTags,
         selectedBoard,
         newColumnData,
         handleDrop,
@@ -30,6 +31,13 @@ const Board = () => {
                         <div className="board-overview-header flex column center">
                             <p className="size-xl bold">{selectedBoard.title}</p>
                             <p className="size-m">{selectedBoard.description}</p>
+                        </div>
+                        <div className="tags flex center size-s white-text">
+                            {userTags.map((tag) => (
+                                <div key={tag._id} className={`tag-display border-radius-s tag-color-${tag.color}`}>
+                                    {tag.name}
+                                </div>
+                            ))}
                         </div>
                         <div className="board-overview-columns flex">
                             {selectedBoard.columns.length > 0 ? (

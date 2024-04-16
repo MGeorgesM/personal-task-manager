@@ -44,6 +44,7 @@ export const useBoardLogic = () => {
             try {
                 const response = await sendRequest(requestMethods.GET, '/tags', null);
                 if (response.status !== 200) throw new Error();
+                console.log(response.data[0].color)
                 dispatch(setTags(response.data));
             } catch (error) {
                 console.log(error);
@@ -108,15 +109,16 @@ export const useBoardLogic = () => {
     };
 
     return {
+        isPopupOpen,
+        userTags,
+        newColumnData,
         selectedBoard,
-        handleDragOver,
         handleDrop,
+        setIsPopupOpen,
+        handleDragOver,
         handleDragStart,
         handleCreateColumn,
         handleCreateColumnCancel,
         handleCreateColumnInputChange,
-        newColumnData,
-        isPopupOpen,
-        setIsPopupOpen,
     };
 };

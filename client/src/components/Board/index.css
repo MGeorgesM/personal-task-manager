@@ -43,3 +43,20 @@
     cursor: pointer;
     color: #737373;
 }
+
+.tag-display {
+    padding: 4px 8px;
+    margin: 0 2px;
+}
+
+.tag-color-blue {
+    background-color: #0095f6;
+}
+
+.tag-color-red {
+    background-color: #f0134d;
+}
+
+.tag-color-purple {
+    background-color: #8e44ad;
+}

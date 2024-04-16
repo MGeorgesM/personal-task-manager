@@ -10,16 +10,16 @@ import './index.css';
 
 const Board = () => {
     const {
+        isPopupOpen,
         selectedBoard,
-        handleDragOver,
+        newColumnData,
         handleDrop,
+        setIsPopupOpen,
+        handleDragOver,
         handleDragStart,
         handleCreateColumn,
         handleCreateColumnCancel,
         handleCreateColumnInputChange,
-        newColumnData,
-        isPopupOpen,
-        setIsPopupOpen
     } = useBoardLogic();
 
     if (selectedBoard)

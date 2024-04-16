@@ -1,25 +1,27 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { Tag } = require('./tag.model');
 
-const taskSchema = new mongoose.Schema(
-    {
-        title: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-        },
-        attachments: {
-            type: [String],
-            default: [],
-        },
-        tags: {
-            type: [String],
-            default: [],
-        },
+const taskSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
     },
-);
+    description: {
+        type: String,
+    },
+    attachments: {
+        type: [String],
+        default: [],
+    },
+    tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Tag',
+            default: [],
+        },
+    ],
+});
 
 const columnSchema = new mongoose.Schema({
     title: {
@@ -33,22 +35,20 @@ const columnSchema = new mongoose.Schema({
     },
 });
 
-const boardSchema = new mongoose.Schema(
-    {
-        title: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        columns: {
-            type: [columnSchema],
-            default: [],
-        },
+const boardSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
     },
-);
+    description: {
+        type: String,
+        required: true,
+    },
+    columns: {
+        type: [columnSchema],
+        default: [],
+    },
+});
 
 const userSchema = new mongoose.Schema(
     {

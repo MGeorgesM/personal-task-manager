@@ -6,18 +6,20 @@ import { sendRequest, requestMethods } from '../../core/tools/apiRequest';
 import { setSelectedBoard } from '../../store/SelectedBoard';
 
 export const useBoardLogic = () => {
+
     const { id } = useParams();
     const dispatch = useDispatch();
-    const selectedBoard = useSelector((global) => global.selectedBoardSlice.selectedBoard);
-    const [draggedTask, setDraggedTask] = useState(null);
 
+    const selectedBoard = useSelector((global) => global.selectedBoardSlice.selectedBoard);
+
+    const [draggedTask, setDraggedTask] = useState(null);
+    const [tags, setTags]
     const [isPopupOpen, setIsPopupOpen] = useState({
         type: '',
         entity: '',
         actionTitle: '',
         isOpen: false,
     });
-
     const [newColumnData, setNewColumnData] = useState({
         title: '',
     });
@@ -32,6 +34,16 @@ export const useBoardLogic = () => {
                 console.log(error);
             }
         };
+
+        const getUserTags = async () => {
+            try {
+                const response = await sendRequest(requestMethods.GET, '/tags', null);
+                if(response.status !== 200) throw new Error();
+                dispatch(setSelectedBoard(response.data));
+            } catch (error) {
+                console.log(error);               
+            }
+        }
         getBoardData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);

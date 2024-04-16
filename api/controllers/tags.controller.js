@@ -4,6 +4,12 @@ const createTag = async (req, res) => {
     const { name, color } = req.body;
     const userId = req.user._id;
 
+    const tagExists = await Tag.findOne({ name, owner: userId });
+
+    if (tagExists) {
+        return res.status(400).json({ error: 'Tag already exists' });
+    }
+
     try {
         const createdTag = await Tag.create({ name, color, owner: userId });
         return res.status(201).json(createdTag);

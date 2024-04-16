@@ -99,13 +99,13 @@ const updateTask = async (req, res) => {
         title && (task.title = title);
         description && (task.description = description);
         attachment && (task.attachment = attachment);
-        tags && (task.tags = tags);
+        tags && (task.tags = tags)
 
         await user.save();
         return res.status(200).json(task);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Error while updating task' });
+        return res.status(500).json({ error: 'Error while updating task', error });
     }
 };
 

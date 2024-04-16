@@ -14,6 +14,7 @@ export const useBoardLogic = () => {
 
     const [draggedTask, setDraggedTask] = useState(null);
     const [tags, setTags]
+
     const [isPopupOpen, setIsPopupOpen] = useState({
         type: '',
         entity: '',
@@ -45,6 +46,7 @@ export const useBoardLogic = () => {
             }
         }
         getBoardData();
+        getUserTags();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
